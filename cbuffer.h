@@ -28,12 +28,33 @@ class cbuffer {
         // cbuffer(const cbuffer &other) : ....
         // cbuffer &operator=(const cbuffer &other)
         // ~cbuffer()
-        
+        // size() const
+		// occupied() const 
+		// current_position() const
+		// insert_tail()
+		// remove_head()
+		// operator[]
+		// forward iterator
+			// cbuffer[0] è l'elemento più vecchio
+			// cbuffer.begin() è l'iteratore all'elemento più vecchio
 
 
-
+	private:
+		unsigned int size;
+		unsigned int currentpos;
+		unsigned int occupied;
+		T* buffer;
 
 }
+
+
+
+
+
+
+
+
+
 
 
 /**
@@ -52,5 +73,7 @@ std::ostream& operator<<(std::ostream &os, const cbuffer<T> & cb) {
 	return os;
 }
 
+
+// evaluate_if
 
 #endif
