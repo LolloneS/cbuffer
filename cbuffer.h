@@ -45,14 +45,7 @@ class cbuffer {
 		unsigned int occupied;
 		T* buffer;
 
-}
-
-
-
-
-
-
-
+};
 
 
 
