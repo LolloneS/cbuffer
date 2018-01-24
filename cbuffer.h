@@ -66,12 +66,12 @@ class cbuffer {
 		@param size Dimensione del cbuffer da istanziare
 		@param value Valore da usare per inizizalizzare le celle dell'array
 	**/
-	cbuffer(unsigned int size, const T &value) : _size(0), _buffer(0), _currentpos(0), _occupied(0) {
+	cbuffer(unsigned int size, const T &value) : _size(0), _currentpos(0), _occupied(0), _buffer(0) {
 		_buffer = new T[size];
 		_size = size;
 
 		try {
-			for(int i=0 ; i < _size; ++i) {
+			for(unsigned int i=0 ; i < _size; ++i) {
 				_buffer[i] = value;
 				_occupied++;
 				_currentpos++;
@@ -97,7 +97,7 @@ class cbuffer {
 		Permette di istanziare un cbuffer con i valori presi da un altro cbuffer.
 		@param other cbuffer da usare per creare quello corrente
 	**/
-	cbuffer(const cbuffer &other) : _size(0), _buffer(0), _occupied(0), _currentpos(0)  {
+	cbuffer(const cbuffer &other) : _size(0), _currentpos(0), _occupied(0), _buffer(0)  {
 		_buffer = new T[other._size];
 		_size = other._size;
 
@@ -122,6 +122,34 @@ class cbuffer {
 		#endif
 	}
 
+	/**
+		@brief Operatore di assegnamento (METODO FONDAMENTALE)
+
+		Operatore di assegnamento. Permette la copia tra cbuffer.
+		@param other cbuffer sorgente
+		@return Riferimento a this
+	**/
+	cbuffer &operator=(const cbuffer &other) {
+		if (this != &other) {
+			// Proviamo a copiare i nuovi dati in un dbuffer di appoggio
+			// Se la copia fallisce, viene lanciata una eccezione e l'esecuzione
+			// torna al chiamante (non la stiamo gestendo)  
+			cbuffer tmp(other);
+			// Se la copia riesce, scambiamo i dati di this con quelli del cbuffer di appoggio
+			std::swap(tmp._buffer, this->_buffer);
+			std::swap(tmp._size, this->_size);
+			std::swap(tmp._occupied, this->_occupied);
+			std::swap(tmp._currentpos, this->_currentpos);
+			// All'uscita dell'if, tmp viene automaticamente distrutto e quindi vengono 
+			//  rimossi i vecchi dati di this che ora si trovano dentro tmp!
+		}
+
+		#ifndef NDEBUG
+		std::cout << "cbuffer::operator=(const cbuffer&)" << std::endl;
+		#endif
+
+		return *this;
+	}
 
 	/**
 		@brief Distruttore (METODO FONDAMENTALE)
@@ -140,8 +168,12 @@ class cbuffer {
 		#endif
 	}
 
+
         // cbuffer &operator=(const cbuffer &other)
-        // ~cbuffer()
+
+
+
+
         // size() const
 		// occupied() const 
 		// current_position() const
