@@ -9,16 +9,18 @@ int main() {
     unsigned int size = 10; 
     cbuffer<std::string> c_str(size);
 
-/*
-    // test del costruttore secondario date size e value
-    unsigned int size_2 = 11;
-    cbuffer<double> c_double(size_2, 3.14);
 
+    // test del costruttore secondario date size e value
+    // unsigned int size_2 = 11;
+    // cbuffer<double> c_double(size_2, 3.14);
+    
     // test del costruttore copia
-    cbuffer<double> c_double_copy_test(c_double);
-    c_double = c_double_copy_test;
-    c_double_copy_test = c_double;
-*/
+    cbuffer<std::string> c_string_copy_test(c_str);
+
+    // test operator=
+    // c_double = c_double_copy_test;
+    // c_double_copy_test = c_double;
+
     delete c_int;
     return 0;
 }

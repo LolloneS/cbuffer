@@ -22,10 +22,9 @@ Classe che rappresenta un buffer circolare templato. La dimensione puo' essere s
 template <typename T>
 class cbuffer {
 	struct node {
-  		bool used;
   		T value;
   		node *next;
-		node() : used(false), value(), next(0) {}
+		node() : value(), next(0) {}
 		node(const T &v, node *n = 0) : value(v), next(n) {}
 	};
 
@@ -84,6 +83,74 @@ class cbuffer {
 			_tail = 0;
 			_current = 0;
 			_occupied = 0;
+		}
+
+		/**
+			@brief Copy constructor (METODO FONDAMENTALE)
+
+			Costruttore copia. 
+			Permette di istanziare un cbuffer con i valori presi da un altro cbuffer.
+			@param other cbuffer da usare per creare quello corrente
+			@throw Eccezione dovuta alla tentata allocazione della memoria
+		**/
+		cbuffer(const cbuffer &other) : _size(0), _occupied(0), _current(0), _head(0), _tail(0)  {
+			const node *tmp = other._head;	
+			_size = other._size;
+				
+			try {
+				while (tmp != 0) {
+					insert(tmp->value);
+					tmp = tmp->next;
+				}
+			}
+			catch(...) {
+				clear();
+				throw;
+			}		
+
+			#ifndef NDEBUG
+			std::cout << "cbuffer::cbuffer(const cbuffer&)" << std::endl;
+			#endif
+		}
+
+
+		/**
+			Inserisce un elemento in coda nel cbuffer.
+			@param value valore da inserire
+			@throw eccezione di allocazione di memoria
+		*/
+		void insert(const T &value) {			
+			// Se il cbuffer non ha ancora elementi e la sua size è > 0, inserisco in testa creando il primo nodo
+			if (_occupied == 0 && _size != 0) {
+				_head = new node(value, 0);
+				_tail = _head;
+				_current = _head;
+				_occupied = 1;
+			}
+			// Se il cbuffer è pieno, inserisco l'elemento dove ora ho la testa, e la testa diventa il next della vecchia
+			else if (_occupied == _size) {
+				node *tmp = _head;
+				_head = _head->next;
+				_current = _head;
+				delete tmp;
+				_tail->next = new node(value, _head);
+				_tail = _tail->next;
+			}
+			else {
+				_occupied++;
+				// Se questo è l'ultimo elemento, i.e. se il successore dell'elemento che aggiungo ora è la testa
+				if (_occupied == _size) {
+					_tail->next = new node(value, _head);
+					_current = _head;
+				}
+				// Se non sono ancora arrivato alla fine del cbuffer 
+				else {
+					_tail->next = new node(value, 0);
+					_current = _tail;
+
+				}
+				_tail = _tail->next;	
+			}
 		}
 
 };
