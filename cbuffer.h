@@ -82,7 +82,38 @@ class cbuffer {
 		#endif
 	}
 
-        // cbuffer(const cbuffer &other) : ....
+	/**
+		@brief Copy constructor (METODO FONDAMENTALE)
+
+		Costruttore copia. 
+		Permette di istanziare un cbuffer con i valori presi da un altro cbuffer.
+		@param other cbuffer da usare per creare quello corrente
+	**/
+	cbuffer(const cbuffer &other) : _size(0), _buffer(0), _occupied(0), _currentpos(0)  {
+		_buffer = new T[other._size];
+		_size = other._size;
+
+		try {
+			for(size_type i=0; i<_size; ++i) {
+				_buffer[i] = other._buffer[i];
+				_occupied++;
+				_currentpos++;
+			}
+		}
+		catch(...) {
+			delete[] _buffer;
+			_size = 0;
+			_buffer = 0;
+			_occupied = 0;
+			_currentpos = 0;
+			throw;
+		}
+
+		#ifndef NDEBUG
+		std::cout << "cbuffer::cbuffer(const cbuffer&)" << std::endl;
+		#endif
+	}
+
         // cbuffer &operator=(const cbuffer &other)
         // ~cbuffer()
         // size() const
