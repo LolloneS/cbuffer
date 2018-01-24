@@ -95,15 +95,13 @@ class cbuffer {
 		**/
 		cbuffer(const cbuffer &other) : _size(0), _occupied(0), _current(0), _head(0), _tail(0)  {
 			const node *tmp = other._head;	
-			_size = other._size;
-				
+			_size = other._size;	
 			try {
 				while (tmp != 0) {
 					insert(tmp->value);
 					tmp = tmp->next;
 				}
-			}
-			catch(...) {
+			} catch(...) {
 				clear();
 				throw;
 			}		
