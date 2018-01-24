@@ -23,8 +23,65 @@ Classe che rappresenta un buffer circolare templato. La dimensione puo' essere s
 template <typename T>
 class cbuffer {
     public:
-        // cbuffer() : .....
-        // explicit cbuffer(size) : .....
+
+	/**
+		@brief Costruttore di default
+		Costruttore di default per istanziare un cbuffer vuoto.
+	**/
+	cbuffer(): _size(0), _buffer(0), _currentpos(0), _occupied(0) { // initialization list
+		#ifndef NDEBUG
+		std::cout << "cbuffer::cbuffer()" << std::endl;
+		#endif
+	}
+
+	/**
+		@brief Costruttore secondario
+
+		Costruttore secondario. Permette di istanziare un cbuffer con una data dimensione.
+		@param size Dimensione del cbuffer da istanziare 
+	**/
+	explicit cbuffer(unsigned int size) : _size(0), _buffer(0), _currentpos(0), _occupied(0) {
+		_buffer = new T[size];
+		_size = size;
+
+		#ifndef NDEBUG
+		std::cout << "cbuffer::cbuffer(unsigned int)" << std::endl;
+		#endif
+	}
+
+
+	/**
+		@brief Costruttore secondario
+
+		Costruttore secondario. Permette di istanziare un cbuffer con una data dimensione
+		e di inizializzare ogni cella con il valore dato
+		@param size Dimensione del cbuffer da istanziare
+		@param value Valore da usare per inizizalizzare le celle dell'array
+	**/
+	cbuffer(unsigned int size, const T &value) : _size(0), _buffer(0), _currentpos(0), _occupied(0) {
+		_buffer = new T[size];
+		_size = size;
+
+		try {
+			for(int i=0 ; i < _size; ++i) {
+				_buffer[i] = value;
+				_occupied++;
+				_currentpos++;
+			}
+		}
+		catch(...) {
+			delete[] _buffer;
+			_size = 0;
+			_buffer = 0;
+			_occupied = 0;
+			_currentpos = 0;
+			throw;
+		}
+		#ifndef NDEBUG
+		std::cout << "cbuffer::cbuffer(unsigned int, T)" << std::endl;
+		#endif
+	}
+
         // cbuffer(const cbuffer &other) : ....
         // cbuffer &operator=(const cbuffer &other)
         // ~cbuffer()
@@ -40,10 +97,10 @@ class cbuffer {
 
 
 	private:
-		unsigned int size;
-		unsigned int currentpos;
-		unsigned int occupied;
-		T* buffer;
+		unsigned int _size;
+		unsigned int _currentpos;
+		unsigned int _occupied;
+		T* _buffer;
 
 };
 
