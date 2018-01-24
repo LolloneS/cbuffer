@@ -94,7 +94,7 @@ class cbuffer {
 		_size = other._size;
 
 		try {
-			for(size_type i=0; i<_size; ++i) {
+			for(unsigned int i=0; i<_size; ++i) {
 				_buffer[i] = other._buffer[i];
 				_occupied++;
 				_currentpos++;
