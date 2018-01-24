@@ -22,13 +22,21 @@ Classe che rappresenta un buffer circolare templato. La dimensione puo' essere s
 
 template <typename T>
 class cbuffer {
-    public:
+
+	private:
+		unsigned int _size;
+		unsigned int _currentpos;
+		unsigned int _occupied;
+		T* _buffer;
+    
+	
+	public:
 
 	/**
 		@brief Costruttore di default
 		Costruttore di default per istanziare un cbuffer vuoto.
 	**/
-	cbuffer(): _size(0), _buffer(0), _currentpos(0), _occupied(0) { // initialization list
+	cbuffer(): _size(0), _currentpos(0), _occupied(0), _buffer(0) { // initialization list
 		#ifndef NDEBUG
 		std::cout << "cbuffer::cbuffer()" << std::endl;
 		#endif
@@ -40,7 +48,7 @@ class cbuffer {
 		Costruttore secondario. Permette di istanziare un cbuffer con una data dimensione.
 		@param size Dimensione del cbuffer da istanziare 
 	**/
-	explicit cbuffer(unsigned int size) : _size(0), _buffer(0), _currentpos(0), _occupied(0) {
+	explicit cbuffer(unsigned int size) : _size(0), _currentpos(0), _occupied(0), _buffer(0) {
 		_buffer = new T[size];
 		_size = size;
 
@@ -114,6 +122,24 @@ class cbuffer {
 		#endif
 	}
 
+
+	/**
+		@brief Distruttore (METODO FONDAMENTALE)
+
+		Distruttore. Rimuove la memoria allocata da cbuffer.
+	**/
+	~cbuffer() {
+		delete[] _buffer;
+		_buffer = 0;
+		_size = 0;
+		_occupied = 0;
+		_currentpos = 0;
+
+		#ifndef NDEBUG
+		std::cout << "cbuffer::~cbuffer()" << std::endl;
+		#endif
+	}
+
         // cbuffer &operator=(const cbuffer &other)
         // ~cbuffer()
         // size() const
@@ -126,12 +152,6 @@ class cbuffer {
 			// cbuffer[0] è l'elemento più vecchio
 			// cbuffer.begin() è l'iteratore all'elemento più vecchio
 
-
-	private:
-		unsigned int _size;
-		unsigned int _currentpos;
-		unsigned int _occupied;
-		T* _buffer;
 
 };
 
