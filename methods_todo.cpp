@@ -1,4 +1,4 @@
-// PRIMA COSA provare la insert!!!
+// PRIMA COSA provare la insert e il costruttore copia!!!
 // se inserisco in posizione 10 in un cbuffer grande 6, è errore?
 // quando cancello l'elemento in testa cosa succede? rimane l'elemento più vecchio visto che le modifiche non cambiano l'anzianità?
 // cbuffer &operator=(const cbuffer &other)
