@@ -96,10 +96,12 @@ class cbuffer {
 		cbuffer(const cbuffer &other) : _size(0), _occupied(0), _current(0), _head(0), _tail(0)  {
 			const node *tmp = other._head;	
 			_size = other._size;	
+			unsigned int count = 0;
 			try {
-				while (tmp != 0) {
+				while (count < _size) {
 					insert(tmp->value);
 					tmp = tmp->next;
+					count++;
 				}
 			} catch(...) {
 				clear();
@@ -148,6 +150,16 @@ class cbuffer {
 
 				}
 				_tail = _tail->next;	
+			}
+		}
+
+		void get() {
+			node* tmp = _head;
+			unsigned int count = 0;
+			while (tmp != 0 && count < _size) {
+				count++;
+				std::cout << tmp->value << std::endl;
+				tmp = tmp->next;
 			}
 		}
 

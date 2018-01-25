@@ -6,7 +6,13 @@ main.exe: main.o
 main.o: main.cpp
 	g++ $(CXXFLAGS) -c main.cpp -o main.o
 
-.PHONY: clean
-
+.PHONY: clean release rebuild
 clean:
-	rm *.exe *.o
+	rm -f *.exe *.o
+
+release:
+	g++ $(CXXFLAGS) -c main.cpp -o main.o
+	g++ $(CXXFLAGS) main.o -o main.exe
+
+
+rebuild: clean release

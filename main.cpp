@@ -6,21 +6,20 @@ int main() {
     cbuffer<int>* c_int = new cbuffer<int>();
 
     // test del costruttore secondario, data la size
-    unsigned int size = 10; 
+    unsigned int size = 3; 
     cbuffer<std::string> c_str(size);
 
-
-    // test del costruttore secondario date size e value
-    // unsigned int size_2 = 11;
-    // cbuffer<double> c_double(size_2, 3.14);
+    c_str.insert("prova");
+    c_str.insert("prova2");
+    c_str.insert("prova3");
     
+    c_str.get();
+
     // test del costruttore copia
+    
     cbuffer<std::string> c_string_copy_test(c_str);
-
-    // test operator=
-    // c_double = c_double_copy_test;
-    // c_double_copy_test = c_double;
-
+    c_string_copy_test.get();
+    
     delete c_int;
     return 0;
 }
