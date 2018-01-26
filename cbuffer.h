@@ -68,6 +68,9 @@ class cbuffer {
 		**/
 		~cbuffer() {
 			clear();
+			#ifndef NDEBUG
+				std::cout << "cbuffer::~cbuffer()" << std::endl;
+			#endif
 		}
 
   		void clear() {
@@ -83,6 +86,9 @@ class cbuffer {
 			_tail = 0;
 			_current = 0;
 			_occupied = 0;
+			#ifndef NDEBUG
+				std::cout << "cbuffer::clear()" << std::endl;
+			#endif
 		}
 
 		/**
@@ -101,7 +107,7 @@ class cbuffer {
 				while (count < _size) {
 					insert(tmp->value);
 					tmp = tmp->next;
-					count++;
+					++count;
 				}
 			} catch(...) {
 				clear();
@@ -111,6 +117,25 @@ class cbuffer {
 			#ifndef NDEBUG
 			std::cout << "cbuffer::cbuffer(const cbuffer&)" << std::endl;
 			#endif
+		}
+
+		/**
+			Operatore di assegnamento
+		
+			@param other lista da copiare
+			@return reference a this
+			@throw eccezione di allocazione di memoria
+		*/
+		cbuffer& operator=(const cbuffer &other) {
+			if (this != &other) {
+				cbuffer tmp(other);
+				std::swap(tmp._size, _size);
+				std::swap(tmp._occupied, _occupied);
+				std::swap(tmp._head, _head);
+				std::swap(tmp._tail, _tail);
+				std::swap(tmp._current, _current);
+			}
+			return *this;
 		}
 
 
@@ -137,7 +162,7 @@ class cbuffer {
 				_tail = _tail->next;
 			}
 			else {
-				_occupied++;
+				++_occupied;
 				// Se questo è l'ultimo elemento, i.e. se il successore dell'elemento che aggiungo ora è la testa
 				if (_occupied == _size) {
 					_tail->next = new node(value, _head);
@@ -151,17 +176,54 @@ class cbuffer {
 				}
 				_tail = _tail->next;	
 			}
+			#ifndef NDEBUG
+				std::cout << "cbuffer::insert()" << std::endl;
+			#endif
+
 		}
 
 		void get() {
 			node* tmp = _head;
 			unsigned int count = 0;
 			while (tmp != 0 && count < _size) {
-				count++;
+				++count;
 				std::cout << tmp->value << std::endl;
 				tmp = tmp->next;
 			}
 		}
+
+		const unsigned int size() const {
+			return _size;
+		}
+
+		const unsigned int occupied() const {
+			return _occupied;
+		}
+
+		/**
+			Costruttore secondario che costruisce un cbuffer a partire
+			da una sequenza generica di dati identificata da due 
+			iteratori.
+
+			@param begin iteratore di inizio della sequenza
+			@param end iteratore di fine della sequenza
+
+			@throw eccezione di allocazione di memoria
+		*/
+		template <typename IterT>
+		cbuffer(unsigned int size, IterT begin, IterT end) : _size(0), _occupied(0), _current(0), _head(0), _tail(0) {
+			try {
+				_size = size;		
+				for(; begin != end; ++begin) {
+					insert(static_cast<T>(*begin));		
+				}
+			}
+			catch(...) {
+				clear();
+				throw;
+			}
+		}
+
 
 };
 
