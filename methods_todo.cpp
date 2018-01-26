@@ -1,5 +1,5 @@
 // PRIMA COSA provare la insert l'operator= e il costruttore copia!!!
-
+// AGGIUNGI TRY CATCH nella insert! potrebbe non esserci spazio per un nodo!
 
 // quando cancello l'elemento in testa cosa succede? rimane l'elemento più vecchio visto che le modifiche non cambiano l'anzianità?
 // current_position() const

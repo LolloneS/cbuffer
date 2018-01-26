@@ -54,7 +54,7 @@ class cbuffer {
 			Costruttore secondario. Permette di istanziare un cbuffer con una data dimensione.
 			@param size Dimensione del cbuffer da istanziare 
 		**/
-		explicit cbuffer(unsigned int size) : _size(0), _occupied(0), _current(0), _head(0), _tail(0) {
+		explicit cbuffer(const unsigned int size) : _size(0), _occupied(0), _current(0), _head(0), _tail(0) {
 			_size = size;
 			#ifndef NDEBUG
 			std::cout << "cbuffer::cbuffer(unsigned int)" << std::endl;
@@ -73,6 +73,11 @@ class cbuffer {
 			#endif
 		}
 
+		/**
+			@brief Metodo per svuotare il cbuffer
+
+			Svuota il cbuffer e lascia la memoria in uno stato consistente
+		**/
   		void clear() {
 			node *tmp = _head;
 			while(_occupied > 0 && tmp != 0) {
@@ -182,6 +187,11 @@ class cbuffer {
 
 		}
 
+		/**
+			@brief Metodo di debug
+
+			Stampa il contenuto del cbuffer. Usato per debug
+		**/
 		void get() {
 			node* tmp = _head;
 			unsigned int count = 0;
@@ -192,11 +202,23 @@ class cbuffer {
 			}
 		}
 
-		const unsigned int size() const {
+		/**
+			@brief Dimensione del cbuffer
+
+			Metodo per conoscere la dimensione del cbuffer
+			@return dimensione del cbuffer, _size
+		**/
+		unsigned int size() const {
 			return _size;
 		}
 
-		const unsigned int occupied() const {
+		/**
+			@brief Elementi occupati del cbuffer
+
+			Metodo per conoscere quanti sono gli elementi occupati del cbuffer
+			@return numero di elementi occupati, _occupied
+		**/
+		unsigned int occupied() const {
 			return _occupied;
 		}
 
@@ -205,13 +227,14 @@ class cbuffer {
 			da una sequenza generica di dati identificata da due 
 			iteratori.
 
+			@param size dimensione del cbuffer da creare
 			@param begin iteratore di inizio della sequenza
 			@param end iteratore di fine della sequenza
 
 			@throw eccezione di allocazione di memoria
 		*/
 		template <typename IterT>
-		cbuffer(unsigned int size, IterT begin, IterT end) : _size(0), _occupied(0), _current(0), _head(0), _tail(0) {
+		cbuffer(const unsigned int size, IterT begin, IterT end) : _size(0), _occupied(0), _current(0), _head(0), _tail(0) {
 			try {
 				_size = size;		
 				for(; begin != end; ++begin) {
