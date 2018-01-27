@@ -32,7 +32,6 @@ class cbuffer {
 	private:
 		unsigned int _size;
 		unsigned int _occupied;
-		node* _current;
 		node* _head;
 		node* _tail;
 
@@ -42,7 +41,7 @@ class cbuffer {
 			@brief Costruttore di default
 			Costruttore di default per istanziare un cbuffer vuoto.
 		**/
-		cbuffer(): _size(0), _occupied(0), _current(0), _head(0), _tail(0) { // initialization list
+		cbuffer(): _size(0), _occupied(0), _head(0), _tail(0) { // initialization list
 			#ifndef NDEBUG
 			std::cout << "cbuffer::cbuffer()" << std::endl;
 			#endif
@@ -54,7 +53,7 @@ class cbuffer {
 			Costruttore secondario. Permette di istanziare un cbuffer con una data dimensione.
 			@param size Dimensione del cbuffer da istanziare 
 		**/
-		explicit cbuffer(const unsigned int size) : _size(0), _occupied(0), _current(0), _head(0), _tail(0) {
+		explicit cbuffer(const unsigned int size) : _size(0), _occupied(0), _head(0), _tail(0) {
 			_size = size;
 			#ifndef NDEBUG
 			std::cout << "cbuffer::cbuffer(unsigned int)" << std::endl;
@@ -89,7 +88,6 @@ class cbuffer {
 			_size = 0;
 			_head = 0;
 			_tail = 0;
-			_current = 0;
 			_occupied = 0;
 			#ifndef NDEBUG
 				std::cout << "cbuffer::clear()" << std::endl;
@@ -104,7 +102,7 @@ class cbuffer {
 			@param other cbuffer da usare per creare quello corrente
 			@throw Eccezione dovuta alla tentata allocazione della memoria
 		**/
-		cbuffer(const cbuffer &other) : _size(0), _occupied(0), _current(0), _head(0), _tail(0)  {
+		cbuffer(const cbuffer &other) : _size(0), _occupied(0), _head(0), _tail(0)  {
 			const node *tmp = other._head;	
 			_size = other._size;	
 			unsigned int count = 0;
@@ -138,7 +136,6 @@ class cbuffer {
 				std::swap(tmp._occupied, _occupied);
 				std::swap(tmp._head, _head);
 				std::swap(tmp._tail, _tail);
-				std::swap(tmp._current, _current);
 			}
 			return *this;
 		}
@@ -148,38 +145,39 @@ class cbuffer {
 			Inserisce un elemento in coda nel cbuffer.
 			@param value valore da inserire
 			@throw eccezione di allocazione di memoria
+			@return boolean che vale false se e solo se la _size del cbuffer è 0
 		*/
-		void insert(const T &value) {			
+		bool insert(const T &value) {
+			if (_size == 0)
+				return false;		
 			// Se il cbuffer non ha ancora elementi e la sua size è > 0, inserisco in testa creando il primo nodo
-			if (_occupied == 0 && _size != 0) {
+			if (_occupied == 0) {
 				_head = new node(value, 0);
 				_tail = _head;
-				_current = _head;
 				_occupied = 1;
+				return true;
 			}
 			// Se il cbuffer è pieno, inserisco l'elemento dove ora ho la testa, e la testa diventa il next della vecchia
 			else if (_occupied == _size) {
 				node *tmp = _head;
 				_head = _head->next;
-				_current = _head;
 				delete tmp;
 				_tail->next = new node(value, _head);
 				_tail = _tail->next;
+				return true;
 			}
 			else {
 				++_occupied;
 				// Se questo è l'ultimo elemento, i.e. se il successore dell'elemento che aggiungo ora è la testa
 				if (_occupied == _size) {
 					_tail->next = new node(value, _head);
-					_current = _head;
 				}
 				// Se non sono ancora arrivato alla fine del cbuffer 
 				else {
 					_tail->next = new node(value, 0);
-					_current = _tail;
-
 				}
-				_tail = _tail->next;	
+				_tail = _tail->next;
+				return true;	
 			}
 			#ifndef NDEBUG
 				std::cout << "cbuffer::insert()" << std::endl;
@@ -234,7 +232,7 @@ class cbuffer {
 			@throw eccezione di allocazione di memoria
 		*/
 		template <typename IterT>
-		cbuffer(const unsigned int size, IterT begin, IterT end) : _size(0), _occupied(0), _current(0), _head(0), _tail(0) {
+		cbuffer(const unsigned int size, IterT begin, IterT end) : _size(0), _occupied(0), _head(0), _tail(0) {
 			try {
 				_size = size;		
 				for(; begin != end; ++begin) {
@@ -244,6 +242,23 @@ class cbuffer {
 			catch(...) {
 				clear();
 				throw;
+			}
+		}
+
+		/**
+		    Metodo che rimuove l'elemento in testa del cbuffer
+		*/
+		void remove_head() {
+			if (_head != 0) {
+				// assegno esplicitamente a null, probabilmente non necessario
+				if (_occupied == _size) {
+					_tail->next = 0;
+				}
+				node* tmp;
+				tmp = _head;
+				_head = _head->next;
+				--_occupied;
+				delete tmp;
 			}
 		}
 
