@@ -28,6 +28,213 @@ class cbuffer {
 		node(const T &v, node *n = 0) : value(v), next(n) {}
 	};
 
+	class const_iterator; // forward declaration
+
+	class iterator {
+		node *n;
+
+	public:
+		typedef std::forward_iterator_tag iterator_category;
+		typedef T                         value_type;
+		typedef ptrdiff_t                 difference_type;
+		typedef T*                        pointer;
+		typedef T&                        reference;
+
+	
+		iterator() : n(0) {}
+		
+		iterator(const iterator &other) : n(other.n) {}
+
+		iterator& operator=(const iterator &other) {
+			n = other.n;
+			return *this;
+		}
+
+		~iterator() {
+			n = 0;
+			delete n;
+		}
+
+		// Ritorna il dato riferito dall'iteratore (dereferenziamento)
+		reference operator*() const {
+			return n->value;
+		}
+
+		// Ritorna il puntatore al dato riferito dall'iteratore
+		pointer operator->() const {
+			return &(n->value);
+		}
+
+		// Operatore di iterazione post-incremento
+		iterator operator++(int) {
+			iterator tmp(*this);
+			n = n->next;
+			return tmp;
+		}
+
+		// Operatore di iterazione pre-incremento
+		iterator& operator++() {
+			n = n->next;
+			return *this;
+		}
+
+		// Uguaglianza
+		bool operator==(const iterator &other) const {
+			return n == other.n;
+		}
+
+		// Diversita'
+		bool operator!=(const iterator &other) const {
+			return n != other.n;
+		}
+		
+		// Solo se serve anche const_iterator aggiungere le seguenti definizioni
+		friend class const_iterator;
+
+		// Uguaglianza
+		bool operator==(const const_iterator &other) const {
+			return n == other.n;
+		}
+
+		// Diversita'
+		bool operator!=(const const_iterator &other) const {
+			return n != other.n;
+		}
+
+		// Solo se serve anche const_iterator aggiungere le precedenti definizioni
+
+	private:
+		//Dati membro
+
+		// La classe container deve essere messa friend dell'iteratore per poter
+		// usare il costruttore di inizializzazione.
+		friend class cbuffer; // !!! Da cambiare il nome!
+
+		// Costruttore privato di inizializzazione usato dalla classe container
+		// tipicamente nei metodi begin e end
+		iterator(node* nn) : n(nn) {}
+		
+		// !!! Eventuali altri metodi privati
+		
+	}; // classe iterator
+	
+	// Ritorna l'iteratore all'inizio della sequenza dati
+	iterator begin() {
+		return iterator(_head);
+	}
+	
+	// Ritorna l'iteratore alla fine della sequenza dati
+	iterator end() {
+		return iterator(0);
+	}
+	
+	
+	
+	class const_iterator {
+		node *n;
+	public:
+		typedef std::forward_iterator_tag iterator_category;
+		typedef T                         value_type;
+		typedef ptrdiff_t                 difference_type;
+		typedef const T*                  pointer;
+		typedef const T&                  reference;
+
+	
+		const_iterator() : n(0) {}
+		
+		const_iterator(const const_iterator &other) : n(other.n) {}
+
+		const_iterator& operator=(const const_iterator &other) {
+			n = other.n;
+			return *this;	
+		}
+
+		~const_iterator() {
+			n = 0;
+			delete n;
+		}
+
+		// Ritorna il dato riferito dall'iteratore (dereferenziamento)
+		reference operator*() const {
+			return n->value;
+		}
+
+		// Ritorna il puntatore al dato riferito dall'iteratore
+		pointer operator->() const {
+			return &(n->value);
+		}
+		
+		// Operatore di iterazione post-incremento
+		const_iterator operator++(int) {
+			const_iterator tmp(*this);
+			n = n->next;
+			return tmp;
+		}
+
+		// Operatore di iterazione pre-incremento
+		const_iterator& operator++() {
+			n = n->next;
+			return *this;
+		}
+
+		// Uguaglianza
+		bool operator==(const const_iterator &other) const {
+			return n == other.n;
+		}
+		
+		// Diversita'
+		bool operator!=(const const_iterator &other) const {
+			return n != other.n;
+		}
+
+		// Solo se serve anche iterator aggiungere le seguenti definizioni
+		
+		friend class iterator;
+
+		// Uguaglianza
+		bool operator==(const iterator &other) const {
+			return n == other.n;
+		}
+
+		// Diversita'
+		bool operator!=(const iterator &other) const {
+			return n != other.n;
+		}
+
+		// Costruttore di conversione iterator -> const_iterator
+		const_iterator(const iterator &other) : n(other.n) {}
+
+		// Assegnamento di un iterator ad un const_iterator
+		const_iterator &operator=(const iterator &other) {
+			n = other.n;
+			return this;
+		}
+
+		// Solo se serve anche iterator aggiungere le precedenti definizioni
+
+	private:
+		friend class cbuffer;
+
+		// Costruttore privato di inizializzazione usato dalla classe container
+		// tipicamente nei metodi begin e end
+		const_iterator(node *nn) : n(nn) {}
+		
+		// !!! Eventuali altri metodi privati
+		
+	}; // classe const_iterator
+	
+	// Ritorna l'iteratore all'inizio della sequenza dati
+	const_iterator begin() const {
+		return const_iterator(_head);
+	}
+	
+	// Ritorna l'iteratore alla fine della sequenza dati
+	const_iterator end() const {
+		return const_iterator(0);
+	}
+	
+	
+
 
 	private:
 		unsigned int _size;
@@ -261,6 +468,8 @@ class cbuffer {
 				delete tmp;
 			}
 		}
+
+		
 
 
 };
