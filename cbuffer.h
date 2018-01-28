@@ -242,6 +242,46 @@ class cbuffer {
 		node* _head;
 		node* _tail;
 
+				/** 
+		   @brief Ritorna un puntatore costante al nodo i-esimo
+
+		   Metodo che ritorna un puntatore costante al nodo i-esimo.
+		   Se questo non esiste, ritorna un puntatore a null
+
+		   @param index Indice del nodo da estrarre
+		   @return Puntatore costante al nodo index-esimo
+		**/
+		const node* get_node(unsigned int index) const {
+			if (index < _occupied) {
+				unsigned int count = 0;
+				node *tmp = _head;
+				while (tmp != 0 && count++ < index) 
+					tmp = tmp->next;
+				return tmp;
+			}
+			return 0;
+		}
+
+		/** 
+		   @brief Ritorna un puntatore al nodo i-esimo
+
+		   Metodo che ritorna un puntatore al nodo i-esimo.
+		   Se questo non esiste, ritorna un puntatore a null
+
+		   @param index Indice del nodo da estrarre
+		   @return Puntatore costante al nodo index-esimo
+		**/
+		node* get_node(unsigned int index) {
+			if (index < _occupied) {
+				unsigned int count = 0;
+				node *tmp = _head;
+				while (tmp != 0 && count < index)
+					tmp = tmp->next;
+				return tmp;
+			}
+			return 0;
+		}
+
 	public:
 
 		/**
@@ -453,7 +493,10 @@ class cbuffer {
 		}
 
 		/**
-		    Metodo che rimuove l'elemento in testa del cbuffer
+		    @brief Metodo che rimuove l'elemento in testa del cbuffer
+
+			Rimuove l'elemento in testa, se questa esiste. In tal caso, riduce il numero
+			degli occupati di 1 ed aggiorna il cbuffer
 		*/
 		void remove_head() {
 			if (_head != 0) {
@@ -469,8 +512,35 @@ class cbuffer {
 			}
 		}
 
-		
 
+
+
+		/**
+			@brief Accesso ai dati in lettura/scrittura (stile C++ con operatore)
+
+			Metodo getter per leggere il valore index-esimo dell'array. 
+
+			@pre E' necessario che index < _occupied
+			@param index Indice della cella dell'array da leggere
+			@return Il valore della cella index-esima
+		**/
+		T &operator[](unsigned int index) {
+			assert(index < _occupied && "ERRORE! Accesso ad un indice inesistente"); // asserzione; se viene violata il programma termina
+			return get_node(index)->value;
+		}
+
+		/**
+			@brief Accesso ai dati in lettura (stile C++ con operatore)
+
+			Metodo setter per scrivere il valore index-esimo dell'array. 
+
+			@pre E' necessario che index < _occupied
+			@param index Indice della cella dell'array da scrivere
+		**/
+		const T &operator[](unsigned int index) const {
+			assert(index < _occupied && "ERRORE! Accesso ad un indice inesistente"); // asserzione; se viene violata il programma termina
+			return get_node(index)->value;
+		}
 
 };
 
@@ -488,7 +558,7 @@ class cbuffer {
 **/
 template <typename T>
 std::ostream& operator<<(std::ostream &os, const cbuffer<T> & cb) {
-	for (unsigned int i = 0; i < cb.size(); ++i)
+	for (unsigned int i = 0; i < cb.occupied(); ++i)
 		os << cb[i] << " ";
 	return os;
 }

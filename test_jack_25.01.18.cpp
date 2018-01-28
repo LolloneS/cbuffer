@@ -458,37 +458,14 @@ void test_evaluate_if() {
 
 }
 
-void test_costruttore_iteratori() {
-    /*Metodi necessari: costruttore con iteratori, evaluate_if, inserimento con riscrittura
-    */
-    std::cout << "TEST CON COSTRUTTORE ITERATORI " << std::endl;
-    std::cout << std::endl;
 
-    std::cout << "Dichiaro array di interi con 5 elementi (7 9 12 2 1)" << std::endl;
-    int a[5] = {7, 9, 12, 2, 1};
-	std::cout << "Dichiaro cbuffer con il costruttore dotato di iteratori" << std::endl;
-	circolar_buffer<int> cb1(a,a+5, 5);
-	std::cout << "Elementi di cb1: " << cb1;
-    std::cout << "_occupati di cb1: " << cb1.get_occupati() << std::endl;
-    std::cout << "_size di cb1: " << cb1.get_size() << std::endl;
-    std::cout << std::endl;
-    
-    std::cout << "Inserisco in cb1 un elemento (19) avrò 9 nuova head e 19 tail" << std::endl;
-    cb1.insert(19);
-    std::cout << "cb1 dopo inserimenti elemento: " << cb1 << std::endl;
-    
-    std::cout << "Elimino la testa di cb1 la nuova testa sarà 12" << std::endl;
-    cb1.elimina_testa();
-    std::cout << "cb1 dopo eliminazione testa: " << cb1;
-    std::cout << "_occupati di cb1: " << cb1.get_occupati() << std::endl;
-    std::cout << "_size di cb1: " << cb1.get_size() << std::endl;
-    std::cout << std::endl;
-
+    /* 
     std::cout << "Test funtore is_even" << std::endl;
     std::cout << "True -> numero è pari" << std::endl;
     std::cout << "False -> numero è dispari" << std::endl;
+    
     is_even funtore;
     for(int i = 0; i < (int)cb1.get_occupati(); i++) 
         evaluate_if(cb1[i], funtore);
     std::cout << std::endl;
-}
+    */
