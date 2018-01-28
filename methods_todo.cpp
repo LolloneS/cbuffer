@@ -1,17 +1,21 @@
-// PRIMA COSA provare la insert l'operator= e il costruttore copia!!!
-// AGGIUNGI TRY CATCH nella insert! potrebbe non esserci spazio per un nodo!
-// CONTROLLA ITERATOR!!!!
+/* Da testare
+	copy ctor
+	insert
+	operator=
+	iterator
+	const iterator
+	operator[]
+*/
 
-// forward iterator
-	// cbuffer[0] è l'elemento più vecchio
-	// cbuffer.begin() è l'iteratore all'elemento più vecchio
 
-// 4) l’accesso in lettura e scrittura dell'elemento i-esimo tramite operatore []
+/* Da aggiungere
+	try-catch nella insert
+*/
+
+
 
 // se inserisco in posizione 10 in un cbuffer grande 6, è errore? scegli tu basta che argomenti
 
-// cbuffer[0] è l'elemento più vecchio
-// cbuffer.begin() è l'iteratore all'elemento più vecchio
 
 /*
 Scrivere anche una funzione globale evaluate_if che, dati un cbuffer
@@ -25,4 +29,3 @@ Testale la classe sia su tipi primitivi che su tipi custom e con diversi predica
 */
 
 
-// in scrittura è possibile accedere a cbuffer[occupied+1] per consentire l'inserimento di un nuovo nodo. in lettura no, ritorneremmo null

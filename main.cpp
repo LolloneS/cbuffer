@@ -96,7 +96,7 @@ void test_non_molto_buono() {
 void test_costruttore_copia() {}
 
 void test_costruttore_iteratori() {
-    std::cout << "\n\n***TEST COSTRUTTORE DA UN ITERATORE***" << std::endl;
+    std::cout << "\n\n***TEST COSTRUTTORE DA UN ITERATORE DI TIPO PRIMITIVO CHAR***" << std::endl;
     char chr[4] = {'a', 'b', 'c', 'd'};
 	cbuffer<char> c(4, chr, chr + 4);
     std::cout << c << std::endl;
@@ -109,7 +109,24 @@ void test_costruttore_iteratori() {
     std::cout << c << std::endl;
     std::cout << "c.occupied(): " << c.occupied() << std::endl;
     assert(c.occupied() == 3 && "Problema con occupied, costruttore data la size su tipo complesso");  
+
+    // test stampa con iteratori
+	std::cout<<std::endl<<"TEST STAMPA CON ITERATOR"<<std::endl;
+	cbuffer<char>::iterator i, ie;
+	for(i = c.begin(), ie = c.end(); i != ie; ++i) 
+		std::cout << *i << std::endl;
+
+	std::cout<<std::endl<<"TEST STAMPA CON CONST_ITERATOR"<<std::endl;
+	cbuffer<char>::const_iterator ci, cie;
+	for(ci = c.begin(), cie = c.end(); ci != cie; ++ci) 
+		std::cout<<*ci<<std::endl;
 }
+
+
+void test_cbuffer_di_cbuffer_di_voci() {}
+
+
+
 
 
 int main() {
@@ -122,6 +139,8 @@ int main() {
     test_costruttore_copia();
 
     test_costruttore_iteratori();
+
+    test_cbuffer_di_cbuffer_di_voci();
 
 /*
    

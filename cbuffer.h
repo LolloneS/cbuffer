@@ -28,6 +28,7 @@ class cbuffer {
 		node(const T &v, node *n = 0) : value(v), next(n) {}
 	};
 
+public:
 	class const_iterator; // forward declaration
 
 	class iterator {
@@ -207,7 +208,7 @@ class cbuffer {
 		// Assegnamento di un iterator ad un const_iterator
 		const_iterator &operator=(const iterator &other) {
 			n = other.n;
-			return this;
+			return *this;
 		}
 
 		// Solo se serve anche iterator aggiungere le precedenti definizioni
