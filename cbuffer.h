@@ -126,7 +126,9 @@ public:
 	
 	// Ritorna l'iteratore alla fine della sequenza dati
 	iterator end() {
-		return iterator(_tail);
+		if (_occupied == _size)
+			return iterator(_head);
+		return iterator(0);
 	}
 	
 	
@@ -231,7 +233,9 @@ public:
 	
 	// Ritorna l'iteratore alla fine della sequenza dati
 	const_iterator end() const {
-		return const_iterator(_tail);
+		if (_occupied == _size)
+			return const_iterator(_head);
+		return const_iterator(0);
 	}
 	
 	
