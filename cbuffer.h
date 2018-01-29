@@ -256,8 +256,10 @@ public:
 			if (index < _occupied) {
 				unsigned int count = 0;
 				node *tmp = _head;
-				while (tmp != 0 && count++ < index) 
+				while (tmp != 0 && count < index) {
 					tmp = tmp->next;
+					count++;
+				}
 				return tmp;
 			}
 			return 0;
@@ -276,8 +278,10 @@ public:
 			if (index < _occupied) {
 				unsigned int count = 0;
 				node *tmp = _head;
-				while (tmp != 0 && count < index)
+				while (tmp != 0 && count < index) {
 					tmp = tmp->next;
+					count++;
+				}
 				return tmp;
 			}
 			return 0;
@@ -439,21 +443,6 @@ public:
 		}
 
 		/**
-			@brief Metodo di debug
-
-			Stampa il contenuto del cbuffer. Usato per debug
-		**/
-		void get() {
-			node* tmp = _head;
-			unsigned int count = 0;
-			while (tmp != 0 && count < _size) {
-				++count;
-				std::cout << tmp->value << std::endl;
-				tmp = tmp->next;
-			}
-		}
-
-		/**
 			@brief Dimensione del cbuffer
 
 			Metodo per conoscere la dimensione del cbuffer
@@ -519,8 +508,6 @@ public:
 		}
 
 
-
-
 		/**
 			@brief Accesso ai dati in lettura/scrittura (stile C++ con operatore)
 
@@ -580,7 +567,7 @@ std::ostream& operator<<(std::ostream &os, const cbuffer<T> & cb) {
 template <typename T, typename P>
 void evaluate_if(const cbuffer<T> &cb, const P &funct) {
 	for (unsigned int i = 0; i < cb.occupied(); ++i)
-		std::cout << "[" << i << "]:" << (P(cb[i]) ? "true" : "false") << std::endl;
+		std::cout << "[" << i << "]: " << (funct(cb[i]) ? "true" : "false") << std::endl;
 }
 
 
