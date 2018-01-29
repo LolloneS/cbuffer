@@ -96,7 +96,7 @@ void test_cbuffer_di_cbuffer_di_voci() {
     voce v("Vediamo", "Se funziona", "42");
     cb_v2[1] = v;
 
-    cbuffer<cbuffer<voce>> cb_cb_v(2);
+    cbuffer<cbuffer<voce> > cb_cb_v(2);
 
     cb_cb_v.insert(cb_v);
     cb_cb_v.insert(cb_v2);
