@@ -399,33 +399,38 @@ public:
 			if (_size == 0)
 				return false;		
 			// Se il cbuffer non ha ancora elementi e la sua size è > 0, inserisco in testa creando il primo nodo
-			if (_occupied == 0) {
-				_head = new node(value, 0);
-				_tail = _head;
-				_occupied = 1;
-				return true;
-			}
-			// Se il cbuffer è pieno, inserisco l'elemento dove ora ho la testa, e la testa diventa il next della vecchia
-			else if (_occupied == _size) {
-				node *tmp = _head;
-				_head = _head->next;
-				delete tmp;
-				_tail->next = new node(value, _head);
-				_tail = _tail->next;
-				return true;
-			}
-			else {
-				++_occupied;
-				// Se questo è l'ultimo elemento, i.e. se il successore dell'elemento che aggiungo ora è la testa
-				if (_occupied == _size) {
+			try {
+				if (_occupied == 0) {
+					_head = new node(value, 0);
+					_tail = _head;
+					_occupied = 1;
+					return true;
+				}
+				// Se il cbuffer è pieno, inserisco l'elemento dove ora ho la testa, e la testa diventa il next della vecchia
+				else if (_occupied == _size) {
+					node *tmp = _head;
+					_head = _head->next;
+					delete tmp;
 					_tail->next = new node(value, _head);
+					_tail = _tail->next;
+					return true;
 				}
-				// Se non sono ancora arrivato alla fine del cbuffer 
 				else {
-					_tail->next = new node(value, 0);
+					++_occupied;
+					// Se questo è l'ultimo elemento, i.e. se il successore dell'elemento che aggiungo ora è la testa
+					if (_occupied == _size) {
+						_tail->next = new node(value, _head);
+					}
+					// Se non sono ancora arrivato alla fine del cbuffer 
+					else {
+						_tail->next = new node(value, 0);
+					}
+					_tail = _tail->next;
+					return true;	
 				}
-				_tail = _tail->next;
-				return true;	
+			} catch (...) {
+				clear();
+				throw;
 			}
 			#ifndef NDEBUG
 				std::cout << "cbuffer::insert()" << std::endl;
@@ -564,7 +569,20 @@ std::ostream& operator<<(std::ostream &os, const cbuffer<T> & cb) {
 	return os;
 }
 
+/**
+	@brief Funzione evaluate_if
 
-// evaluate_if
+	Permette di spedire su uno stream di output, per ogni elemento del cbuffer, se P(cb[i]) è true o false
+ 
+	@param cb cbuffer del quale vogliamo stampare il contenuto
+	@param P funtore unario
+**/
+template <typename T, typename P>
+void evaluate_if(const cbuffer<T> &cb, const P &funct) {
+	for (unsigned int i = 0; i < cb.occupied(); ++i)
+		std::cout << "[" << i << "]:" << (P(cb[i]) ? "true" : "false") << std::endl;
+}
+
+
 
 #endif
