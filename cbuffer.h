@@ -126,7 +126,7 @@ public:
 	
 	// Ritorna l'iteratore alla fine della sequenza dati
 	iterator end() {
-		return iterator(0);
+		return iterator(_tail);
 	}
 	
 	
@@ -231,7 +231,7 @@ public:
 	
 	// Ritorna l'iteratore alla fine della sequenza dati
 	const_iterator end() const {
-		return const_iterator(0);
+		return const_iterator(_tail);
 	}
 	
 	

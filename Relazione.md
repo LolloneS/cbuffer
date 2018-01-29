@@ -1,5 +1,8 @@
 # CBuffer
 ## Lorenzo Soligo - 806954 - Febbraio 2018
+### Prima di tutto: compilazione
+* `make doc` per creare la documentazione con Doxygen
+* `make` per compilare il progetto C++
 
 ### Introduzione
 La traccia del progetto richiede di scrivere un buffer circolare di dimensione data in fase di costruzione.
@@ -42,6 +45,7 @@ Di seguito, le mie scelte progettuali per quanto riguarda il cuore della classe,
         È quindi consentita la *modifica* di cellette esistenti, ma non l'inserimento di nuove cellette, che richiede l'utilizzo di `insert`.
 2. **iteratori**
     * sono stati implementati sia `const_iterator` che `iterator`. Questo per consentire sia un accesso read/write, che un accesso in sola lettura, quando non necessaria la scrittura.
+    * l'iteratore `end()` ritorna la coda del cbuffer.
 3. **costruttori**
     * sono stati implementati vari costruttori:
         1. costruttore di default, `cbuffer()`
