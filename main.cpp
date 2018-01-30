@@ -174,6 +174,8 @@ int main() {
     test_evaluate_if();
 
     test_operator_quadre_cattivo();
+    
+    // da implementare test che chiama clear e poi riempie di nuovo
 
     return 0;
 }
