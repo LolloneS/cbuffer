@@ -177,5 +177,7 @@ int main() {
     
     // da implementare test che chiama clear e poi riempie di nuovo
 
+    // valgrind --leak-check=yes
+
     return 0;
 }

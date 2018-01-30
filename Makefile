@@ -1,5 +1,5 @@
 CXXFLAGS = -Wall -pedantic -Wextra -pedantic-errors -DNDEBUG
-CXXFLAGS_DEBUG = -Wall -pedantic -Wextra -pedantic-errors
+CXXFLAGS_DEBUG = -Wall -pedantic -Wextra -pedantic-errors -g
 
 
 main.exe: main.o
@@ -25,3 +25,4 @@ rebuild: clean release
 debug: 
 	g++ $(CXXFLAGS_DEBUG) -c main.cpp -o main.o
 	g++ $(CXXFLAGS_DEBUG) main.o -o main.exe
+
