@@ -26,3 +26,5 @@ debug:
 	g++ $(CXXFLAGS_DEBUG) -c main.cpp -o main.o
 	g++ $(CXXFLAGS_DEBUG) main.o -o main.exe
 
+leak_check: debug
+	valgrind --leak-check=yes ./main.exe

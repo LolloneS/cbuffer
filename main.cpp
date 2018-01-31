@@ -177,6 +177,7 @@ int main() {
     // test che crea un cbuffer di cbuffer di voci e ci lavora su
     test_cbuffer_di_cbuffer_di_voci();
 
+    // test che prova evaluate_if su varie struct
     test_evaluate_if();
 
     test_operator_quadre_cattivo();
