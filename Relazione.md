@@ -45,7 +45,7 @@ Di seguito, le mie scelte progettuali per quanto riguarda il cuore della classe,
         È quindi consentita la *modifica* di cellette esistenti, ma non l'inserimento di nuove cellette, che richiede l'utilizzo di `insert`.
 2. **iteratori**
     * sono stati implementati sia `const_iterator` che `iterator`. Questo per consentire sia un accesso read/write, che un accesso in sola lettura, quando non necessaria la scrittura.
-    * l'iteratore `end()` viene generato su `NULL` se il cbuffer non è pieno, sulla testa del cbuffer se questo è pieno.
+    * **da sistemare** l'iteratore `end()` viene generato su `NULL` se il cbuffer non è pieno, sulla testa del cbuffer se questo è pieno.
 3. **costruttori**
     * sono stati implementati vari costruttori:
         1. costruttore di default, `cbuffer()`

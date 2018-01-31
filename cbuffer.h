@@ -21,6 +21,8 @@ Classe che rappresenta un buffer circolare templato. La dimensione puo' essere s
 **/
 template <typename T>
 class cbuffer {
+	friend class iterator;
+	friend class const_iterator;
 	struct node {
   		T value;
   		node *next;
@@ -32,7 +34,8 @@ public:
 	class const_iterator; // forward declaration
 
 	class iterator {
-		node *n;
+		node *first;
+		node *last;
 
 	public:
 		typedef std::forward_iterator_tag iterator_category;
@@ -42,65 +45,83 @@ public:
 		typedef T&                        reference;
 
 	
-		iterator() : n(0) {}
+		iterator() : first(0), last(0) {}
 		
-		iterator(const iterator &other) : n(other.n) {}
+		iterator(const iterator &other) : first(other.first), last(other.last) {}
 
 		iterator& operator=(const iterator &other) {
-			n = other.n;
+			first = other.first;
+			last = other.last;
 			return *this;
 		}
 
 		~iterator() {
-			n = 0;
-			delete n;
+			first = 0;
+			last = 0;
+			delete first;
+			delete last;
 		}
 
 		// Ritorna il dato riferito dall'iteratore (dereferenziamento)
 		reference operator*() const {
-			return n->value;
+			return first->value;
 		}
 
 		// Ritorna il puntatore al dato riferito dall'iteratore
 		pointer operator->() const {
-			return &(n->value);
+			return &(first->value);
 		}
 
 		// Operatore di iterazione post-incremento
 		iterator operator++(int) {
 			iterator tmp(*this);
-			n = n->next;
+			if (first == last)
+				first = 0;
+			else 
+				first = first->next;
 			return tmp;
 		}
 
 		// Operatore di iterazione pre-incremento
 		iterator& operator++() {
-			n = n->next;
+			if (first == last)
+				first = 0;
+			else 
+				first = first->next;
 			return *this;
-		}
-
-		// Uguaglianza
-		bool operator==(const iterator &other) const {
-			return n == other.n;
 		}
 
 		// Diversita'
 		bool operator!=(const iterator &other) const {
-			return n != other.n;
+			if (first == 0)
+				return false;
+			node *tmp = first;
+			return (first != other.last || tmp++ != 0);
 		}
+
+		// Uguaglianza
+		bool operator==(const iterator &other) const {
+			return !(this != other);
+		}
+
+
 		
 		// Solo se serve anche const_iterator aggiungere le seguenti definizioni
 		friend class const_iterator;
 
-		// Uguaglianza
-		bool operator==(const const_iterator &other) const {
-			return n == other.n;
-		}
-
 		// Diversita'
 		bool operator!=(const const_iterator &other) const {
-			return n != other.n;
+			if (first == 0)
+				return false;
+			node *tmp = first;
+			return (first != other.last || tmp++ != 0);	
 		}
+
+		// Uguaglianza
+		bool operator==(const const_iterator &other) const {
+			return !(this != other);		
+		}
+
 
 		// Solo se serve anche const_iterator aggiungere le precedenti definizioni
 
@@ -113,7 +134,7 @@ public:
 
 		// Costruttore privato di inizializzazione usato dalla classe container
 		// tipicamente nei metodi begin e end
-		iterator(node* nn) : n(nn) {}
+		iterator(node* f, node* l) : first(f), last(l) {}
 		
 		// !!! Eventuali altri metodi privati
 		
@@ -121,20 +142,19 @@ public:
 	
 	// Ritorna l'iteratore all'inizio della sequenza dati
 	iterator begin() {
-		return iterator(_head);
+		return iterator(_head, _tail);
 	}
 	
 	// Ritorna l'iteratore alla fine della sequenza dati
 	iterator end() {
-		if (_occupied == _size)
-			return iterator(_head);
-		return iterator(0);
+		return iterator(_tail, _tail);
 	}
 	
 	
 	
 	class const_iterator {
-		node *n;
+		node *first;
+		node *last;
 	public:
 		typedef std::forward_iterator_tag iterator_category;
 		typedef T                         value_type;
@@ -143,73 +163,93 @@ public:
 		typedef const T&                  reference;
 
 	
-		const_iterator() : n(0) {}
+		const_iterator() : first(0), last(0) {}
 		
-		const_iterator(const const_iterator &other) : n(other.n) {}
+		const_iterator(const const_iterator &other) : first(other.first), last(other.last) {}
 
 		const_iterator& operator=(const const_iterator &other) {
-			n = other.n;
+			first = other.first;
+			last = other.last;
 			return *this;	
 		}
 
 		~const_iterator() {
-			n = 0;
-			delete n;
+			first = 0;
+			last = 0;
+			delete first;
+			delete last;
 		}
 
 		// Ritorna il dato riferito dall'iteratore (dereferenziamento)
 		reference operator*() const {
-			return n->value;
+			return first->value;
 		}
 
 		// Ritorna il puntatore al dato riferito dall'iteratore
 		pointer operator->() const {
-			return &(n->value);
+			return &(first->value);
 		}
 		
 		// Operatore di iterazione post-incremento
 		const_iterator operator++(int) {
 			const_iterator tmp(*this);
-			n = n->next;
+			if (first == last)
+				first = 0;
+			else 
+				first = first->next;			
 			return tmp;
 		}
 
 		// Operatore di iterazione pre-incremento
 		const_iterator& operator++() {
-			n = n->next;
+			if (first == last)
+				first = 0;
+			else 
+				first = first->next;			
 			return *this;
+		}
+
+		// Diversita'
+		bool operator!=(const const_iterator &other) const {
+			if (first == 0)
+				return false;
+			node *tmp = first;
+			return (first != other.last || tmp++ != 0);			
 		}
 
 		// Uguaglianza
 		bool operator==(const const_iterator &other) const {
-			return n == other.n;
+			return !(this != other);			
 		}
 		
-		// Diversita'
-		bool operator!=(const const_iterator &other) const {
-			return n != other.n;
-		}
+
 
 		// Solo se serve anche iterator aggiungere le seguenti definizioni
 		
 		friend class iterator;
 
-		// Uguaglianza
-		bool operator==(const iterator &other) const {
-			return n == other.n;
-		}
-
 		// Diversita'
 		bool operator!=(const iterator &other) const {
-			return n != other.n;
+			if (first == 0)
+				return false;
+			node *tmp = first;
+			return (first != other.last || tmp++ != 0);		
 		}
 
+
+		// Uguaglianza
+		bool operator==(const iterator &other) const {
+			return !(this != other);		
+		}
+
+
+
 		// Costruttore di conversione iterator -> const_iterator
-		const_iterator(const iterator &other) : n(other.n) {}
+		const_iterator(const iterator &other) : first(other.first) {}
 
 		// Assegnamento di un iterator ad un const_iterator
 		const_iterator &operator=(const iterator &other) {
-			n = other.n;
+			first = other.first;
 			return *this;
 		}
 
@@ -220,7 +260,7 @@ public:
 
 		// Costruttore privato di inizializzazione usato dalla classe container
 		// tipicamente nei metodi begin e end
-		const_iterator(node *nn) : n(nn) {}
+		const_iterator(node *f, node *l) : first(f), last(l) {}
 		
 		// !!! Eventuali altri metodi privati
 		
@@ -228,18 +268,14 @@ public:
 	
 	// Ritorna l'iteratore all'inizio della sequenza dati
 	const_iterator begin() const {
-		return const_iterator(_head);
+		return const_iterator(_head, _tail);
 	}
 	
 	// Ritorna l'iteratore alla fine della sequenza dati
 	const_iterator end() const {
-		if (_occupied == _size)
-			return const_iterator(_head);
-		return const_iterator(0);
+		return const_iterator(_tail, _tail);
 	}
 	
-	
-
 
 	private:
 		unsigned int _size;
@@ -477,8 +513,8 @@ public:
 
 			@throw eccezione di allocazione di memoria
 		*/
-		template <typename IterT>
-		cbuffer(const unsigned int size, IterT begin, IterT end) : _size(0), _occupied(0), _head(0), _tail(0) {
+		template <typename Q>
+		cbuffer(const unsigned int size, Q begin, Q end) : _size(0), _occupied(0), _head(0), _tail(0) {
 			try {
 				_size = size;		
 				for(; begin != end; ++begin) {
@@ -555,9 +591,11 @@ public:
 **/
 template <typename T>
 std::ostream& operator<<(std::ostream &os, const cbuffer<T> & cb) {
-	for (unsigned int i = 0; i < cb.occupied(); ++i)
-		os << cb[i] << " ";
-	return os;
+    typename cbuffer<T>::const_iterator i, ie;
+    for (i = cb.begin(), ie = cb.end(); i != ie; ++i) {
+        os << *i << std::endl;
+    }
+    return os;
 }
 
 /**
@@ -573,7 +611,5 @@ void evaluate_if(const cbuffer<T> &cb, const P &funct) {
 	for (unsigned int i = 0; i < cb.occupied(); ++i)
 		std::cout << "[" << i << "]: " << (funct(cb[i]) ? "true" : "false") << std::endl;
 }
-
-
 
 #endif

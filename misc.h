@@ -11,6 +11,9 @@ struct greater_zero {
 	}
 };
 
+
+
+
 struct voce {
 	std::string cognome; ///< cognome del contatto
 	std::string nome; ///< nome del contatto
@@ -30,9 +33,11 @@ std::ostream &operator<<(std::ostream &os, const voce &v) {
 }
 
 
+
+
 struct point {
-	int x; ///< coordinata x del punto
-  	int y; ///< coordinata y del punto
+	int x;
+  	int y;
   	point(int xx, int yy) : x(xx), y(yy) { }
 };
 
@@ -41,3 +46,10 @@ std::ostream &operator<<(std::ostream &os, const point &p) {
 	os << "(" << p.x << ", " << p.y << ")";
   	return os;
 }
+
+
+struct x_equals_y {
+	bool operator()(const point &p) const {
+		return (p.x == p.y);
+	}
+};

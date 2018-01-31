@@ -12,11 +12,40 @@ void test_buono() {
     assert(c_int.insert(2) == false && "Problema con insert costruttore di default su tipo primitivo");
     assert(c_int.occupied() == 0 && "Problema con occupied, costruttore di default su tipo primitivo");
     c_int.remove_head();
+    std::cout << c_int << std::endl;
     assert(c_int.size() == 0 && "Problema con size, costruttore di default su tipo primitivo, dopo insert e remove_head");
     assert(c_int.occupied() == 0 && "Problema con occupied, costruttore di default su tipo primitivo, dopo insert e remove_head");
     std::cout << "!!!TEST COSTRUTTORE DI DEFAULT SU TIPO PRIMITIVO INT PASSATO!!!" <<std::endl;
 }
 
+void test_costruttore_iteratori() {
+    std::cout << "\n\n***TEST COSTRUTTORE DA UN ITERATORE DI TIPO PRIMITIVO CHAR***" << std::endl;
+    char chr[4] = {'a', 'b', 'c', 'd'};
+	cbuffer<char> c(4, chr, chr + 4);
+    assert(c.occupied() == 4 && "Problema con occupied, costruttore da iteratore"); 
+    assert(c.size() == 4 && "Problema con size, costruttore da iteratori");
+    c.remove_head(); // rimuovo la testa
+    c[0] = 'k';
+    assert(c.occupied() == 3 && "Problema con occupied, costruttore da iteratori post remove_head");  
+    c.insert('z');
+	std::cout<<"Test stampa con iterator"<<std::endl;
+
+    cbuffer<char>::iterator i, ie;
+	for(i = c.begin(), ie = c.end(); i != ie; ++i) 
+		std::cout << *i << std::endl;
+    
+    c.clear();
+    assert(c.size() == 0 && "Problema con size, costruttore da iteratori post remove_head");
+    assert(c.occupied() == 0 && "Problema con occupied, costruttore da iteratori post remove_head");
+	std::cout<<std::endl<<"Test stampa cbuffer vuoto con const_iterator"<<std::endl;
+
+	cbuffer<char>::const_iterator ci, cie;
+	for(ci = c.begin(), cie = c.end(); ci != cie; ++ci) 
+		std::cout << *ci << std::endl;
+
+    std::cout << "!!!TEST COSTRUTTORE DA UN ITERATORE DI TIPO PRIMITIVO CHAR PASSATO!!!" << std::endl;
+    
+}
 
 void test_non_molto_buono() {
     std::cout << "\n\n***TEST COSTRUTTORE DATA SIZE SU TIPO NON PRIMITIVO STRING***" << std::endl;
@@ -65,54 +94,21 @@ void test_costruttore_copia() {
     cb_int_2.insert(0);
     std::cout << cb_int_2 << std::endl;
 
-
     std::cout << "\n\n***TEST COSTRUTTORE COPIA SU VECTOR***" << std::endl;    
     cbuffer<std::vector<std::string> > cv(2);
     std::vector<std::string> s1, s2;
     cv.insert(s1);
-    cv.insert(s2);   
+    cv.insert(s2);
     cv[0].push_back("cv[0]");
     cv[1].push_back("cv[1]");
     cbuffer<std::vector<std::string> > cv2(cv);
     cv2[0][0] = "cv[!!!]";
-    assert(cv[0][1].compare(cv[1][1]) && "Errore nel costruttore copia del cbuffer di vector");
+    assert(cv[0][0].compare(cv2[0][0]) && "Errore nel costruttore copia del cbuffer di vector");
     for(unsigned int i = 0; i < cv.size(); ++i) {
         std::cout << cv[i][0] << std::endl;
         std::cout << cv2[i][0] << std::endl;        
     }
 
-}
-
-void test_costruttore_iteratori() {
-    std::cout << "\n\n***TEST COSTRUTTORE DA UN ITERATORE DI TIPO PRIMITIVO CHAR***" << std::endl;
-    char chr[4] = {'a', 'b', 'c', 'd'};
-	cbuffer<char> c(4, chr, chr + 4);
-    assert(c.occupied() == 4 && "Problema con occupied, costruttore da iteratore"); 
-    assert(c.size() == 4 && "Problema con size, costruttore da iteratori");
-    c.remove_head(); // rimuovo la testa
-    c[0] = 'k';
-    assert(c.occupied() == 3 && "Problema con occupied, costruttore da iteratori post remove_head");  
-    c.insert('z');
-	std::cout<<"Test stampa con iterator"<<std::endl;
-
-    // TODO DA CORREGGERE!!!
-	/*
-    cbuffer<char>::iterator i, ie;
-	for(i = c.begin(), ie = c.end(); i != ie; ++i) 
-		std::cout << *i << std::endl;
-    
-    c.clear();
-    assert(c.size() == 0 && "Problema con size, costruttore da iteratori post remove_head");
-    assert(c.occupied() == 0 && "Problema con occupied, costruttore da iteratori post remove_head");
-	std::cout<<std::endl<<"Test stampa cbuffer vuoto con const_iterator"<<std::endl;
-
-    // TODO DA CORREGGERE!!!
-	cbuffer<char>::const_iterator ci, cie;
-	for(ci = c.begin(), cie = c.end(); ci != cie; ++ci) 
-		std::cout << *ci << std::endl;
-
-    std::cout << "!!!TEST COSTRUTTORE DA UN ITERATORE DI TIPO PRIMITIVO CHAR PASSATO!!!" << std::endl;
-    */
 }
 
 
@@ -140,9 +136,6 @@ void test_cbuffer_di_cbuffer_di_voci() {
 
 }
 
-void test_operator_quadre_cattivo() {}
-
-
 void test_evaluate_if() {
     std::cout << "\n\n***TEST EVALUATE_IF***" << std::endl;
 
@@ -151,7 +144,20 @@ void test_evaluate_if() {
     is_even funct;
     evaluate_if(cb_int, funct);
 
+    unsigned int size = 3;
+    cbuffer<point> cbp(size);
+    cbp.insert(point(1, 1));
+    cbp.insert(point(2, 2));
+    cbp.insert(point(1, 3));
+    
+    x_equals_y f;
+    evaluate_if(cbp, f);
+
 }
+
+void test_operator_quadre_cattivo() {}
+
+void test_clear_poi_riempi() {}
 
 
 
@@ -175,9 +181,10 @@ int main() {
 
     test_operator_quadre_cattivo();
     
-    // da implementare test che chiama clear e poi riempie di nuovo
+    test_clear_poi_riempi();
 
-    // valgrind --leak-check=yes
+
+    // controlla bene operator== e operator != nel main
 
     return 0;
 }
