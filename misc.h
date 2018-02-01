@@ -1,23 +1,32 @@
 #include <string>
+
+/**
+	@brief Funtore per sapere se un numero è pari
+	@param n Intero da testare
+	@return boolean True se è vero che il numero è pari
+**/
 struct is_even {
     bool operator()(const int &n) const {
         return ((n % 2) == 0);
     }
 };
 
+/**
+	@brief Funtore per sapere se un numero è positivo
+	@param n Double da testare
+	@return boolean True se è vero che il numero è positivo
+**/
 struct greater_zero {
-	bool operator()(const int &n) const {
+	bool operator()(const double &n) const {
 		return n > 0;
 	}
 };
 
 
-
-
 struct voce {
-	std::string cognome; ///< cognome del contatto
-	std::string nome; ///< nome del contatto
-	std::string ntel; ///< numero telefonico del contatto
+	std::string cognome; 
+	std::string nome; 
+	std::string ntel; 
 	
 	voce() {}
 	
@@ -34,7 +43,6 @@ std::ostream &operator<<(std::ostream &os, const voce &v) {
 
 
 
-
 struct point {
 	int x;
   	int y;
@@ -47,7 +55,11 @@ std::ostream &operator<<(std::ostream &os, const point &p) {
   	return os;
 }
 
-
+/**
+	@brief Funtore per sapere se un punto appartiene alla retta y = x
+	@param p Punto da testare
+	@return boolean True se è vero che il punto giace sulla retta y = x
+**/
 struct x_equals_y {
 	bool operator()(const point &p) const {
 		return (p.x == p.y);

@@ -3,6 +3,8 @@
 ### Prima di tutto: compilazione
 * `make doc` per creare la documentazione con Doxygen
 * `make` per compilare il progetto C++
+* `make debug` per compilare il progetto con stampe di debug e flag `-g`
+* `make run_valgrind` per compilare il progetto con stampe di debug e flag `-g` ed eseguire valgrind con la flag `--leak-check=yes`
 
 ### Introduzione
 La traccia del progetto richiede di scrivere un buffer circolare di dimensione data in fase di costruzione.
@@ -45,7 +47,7 @@ Di seguito, le mie scelte progettuali per quanto riguarda il cuore della classe,
         È quindi consentita la *modifica* di cellette esistenti, ma non l'inserimento di nuove cellette, che richiede l'utilizzo di `insert`.
 2. **iteratori**
     * sono stati implementati sia `const_iterator` che `iterator`. Questo per consentire sia un accesso read/write, che un accesso in sola lettura, quando non necessaria la scrittura.
-    * **da sistemare** l'iteratore `end()` viene generato su `NULL` se il cbuffer non è pieno, sulla testa del cbuffer se questo è pieno.
+    * tramite una flag booleana `first_time` si riesce ad iterare normalmente con un ciclo for, come ci si aspetterebbe. Sia l'iteratore d'inizio che quello di fine corrispondono al nodo `_head`, ma la variabile consente di far fallire il primo controllo *begin ≠ end*
 3. **costruttori**
     * sono stati implementati vari costruttori:
         1. costruttore di default, `cbuffer()`
@@ -73,7 +75,10 @@ Con (non molta) fantasia, ho nominato i test:
 * `test costruttore iteratori`: come dice il nome, costruisce il cbuffer a partire da un iteratore, in particolare un array di caratteri, ed esegue le solite operazioni basilari.
 * `test cbuffer di cbuffer di voci`: istanzia un cbuffer di `cbuffer<voce>` ed esegue le normali operazioni. L'assenza di memory leaks anche in questo test fa ben sperare, così come la stabilità dell'`operator[]` anche in presenza di una `struct`.
 * `test costruttore copia`: autoesplicativo, utilizza il costruttore copia su un po' di cbuffer di vari tipi diversi.
-////// TODO
+* `test evaluate if `: testa il metodo `evaluate_if` su dei cbuffer di varie strutture, con vari funtori.
+* `test operator quadre`: testa a fondo `operator[]`
+* `test clear poi riempi`: chiama `clear` su un cbuffer e lo riempie nuovamente
+
 
 #### Informazioni varie
 * in fase di compilazione e testing, sono state utilizzate le flag `-Wall -Wextra -pedantic` di `g++` ai fini di porre particolare attenzione alla conformità agli standard e di non dimenticare nulla

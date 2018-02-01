@@ -35,7 +35,6 @@ void test_costruttore_iteratori() {
 		std::cout << *i << std::endl;
     
     c.clear();
-    assert(c.size() == 0 && "Problema con size, costruttore da iteratori post remove_head");
     assert(c.occupied() == 0 && "Problema con occupied, costruttore da iteratori post remove_head");
 	std::cout<<std::endl<<"Test stampa cbuffer vuoto con const_iterator"<<std::endl;
 
@@ -92,23 +91,9 @@ void test_costruttore_copia() {
     cbuffer<int> cb_int_2(cb_int);
     cb_int_2.remove_head();
     cb_int_2.insert(0);
+    std::cout << cb_int << std::endl;
     std::cout << cb_int_2 << std::endl;
-
-    std::cout << "\n\n***TEST COSTRUTTORE COPIA SU VECTOR***" << std::endl;    
-    cbuffer<std::vector<std::string> > cv(2);
-    std::vector<std::string> s1, s2;
-    cv.insert(s1);
-    cv.insert(s2);
-    cv[0].push_back("cv[0]");
-    cv[1].push_back("cv[1]");
-    cbuffer<std::vector<std::string> > cv2(cv);
-    cv2[0][0] = "cv[!!!]";
-    assert(cv[0][0].compare(cv2[0][0]) && "Errore nel costruttore copia del cbuffer di vector");
-    for(unsigned int i = 0; i < cv.size(); ++i) {
-        std::cout << cv[i][0] << std::endl;
-        std::cout << cv2[i][0] << std::endl;        
-    }
-
+    assert((cb_int[0] != cb_int_2[0]) && "Problema con il costruttore copia!");
 }
 
 
@@ -133,6 +118,7 @@ void test_cbuffer_di_cbuffer_di_voci() {
     std::cout << cb_cb_v << std::endl;    
     assert(cb_cb_v.size() == 2 && "Errore nella size del cbuffer di cbuffer di voci");
     assert(cb_cb_v.occupied() == 2 && "Errore nella occupied del cbuffer di cbuffer di voci");
+    std::cout << "!!!TEST CBUFFER DI CBUFFER DI INTERI!!!" << std::endl;    
 
 }
 
@@ -142,7 +128,9 @@ void test_evaluate_if() {
     int numbers[10] = {-5, 4, 12, -17, 7, 2, 3, 4, 5, 6};
     cbuffer<int> cb_int(10, numbers, numbers + 10);
     is_even funct;
+    greater_zero funct2;
     evaluate_if(cb_int, funct);
+    evaluate_if(cb_int, funct2);
 
     unsigned int size = 3;
     cbuffer<point> cbp(size);
@@ -152,12 +140,49 @@ void test_evaluate_if() {
     
     x_equals_y f;
     evaluate_if(cbp, f);
+    std::cout << "!!!TEST EVALUATE_IF PASSATO!!!" << std::endl;
 
 }
 
-void test_operator_quadre_cattivo() {}
+void test_operator_quadre() {
+    std::cout << "\n\n***TEST OPERATOR[] SU CBUFFER DI VECTOR***" << std::endl;    
+    cbuffer<std::vector<std::string> > cv(2);
+    std::vector<std::string> s1, s2;
+    cv.insert(s1);
+    cv.insert(s2);
+    cv[0].push_back("cv[0]");
+    cv[1].push_back("cv[1]");
+    cbuffer<std::vector<std::string> > cv2(cv);
+    cv2[0][0] = "cv[!!!]";
+    assert(cv[0][0].compare(cv2[0][0]) && "Errore nel costruttore copia del cbuffer di vector");
+    for(unsigned int i = 0; i < cv.size(); ++i) {
+        std::cout << cv[i][0] << std::endl;
+        std::cout << cv2[i][0] << std::endl;        
+    }
+    std::cout << "!!!TEST OPERATOR[] SU CBUFFER DI VECTOR PASSATO!!!" << std::endl;  
 
-void test_clear_poi_riempi() {}
+
+}
+
+void test_clear_poi_riempi() {
+    std::cout << "\n\n***TEST CLEAR POI RIEMPI***" << std::endl;
+    unsigned int size = 4;
+    cbuffer<point> cp(size);
+    cp.insert(point(1, 1));
+    cp.insert(point(1, 2));
+    cp.insert(point(1, 3));
+    cp.insert(point(1, 4));
+    
+    cp.clear();
+    
+    cp.insert(point(2, 1));
+    cp.insert(point(2, 2));
+    cp.insert(point(2, 3));
+    cp.insert(point(2, 4));
+    std::cout << cp << std::endl;
+
+    std::cout << "!!!TEST CLEAR POI RIEMPI PASSATO!!!" << std::endl;
+}
 
 
 
@@ -180,12 +205,11 @@ int main() {
     // test che prova evaluate_if su varie struct
     test_evaluate_if();
 
-    test_operator_quadre_cattivo();
+    // test che prova a fondo operator[]
+    test_operator_quadre();
     
+    // test che chiama la clear su un cbuffer e poi lo riempie di nuovo
     test_clear_poi_riempi();
-
-
-    // controlla bene operator== e operator != nel main
 
     return 0;
 }

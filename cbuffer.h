@@ -23,6 +23,13 @@ template <typename T>
 class cbuffer {
 	friend class iterator;
 	friend class const_iterator;
+	
+	/**
+		@brief Struttura nodo ausiliaria
+
+		Struttura templata utilizzata per rappresentare le "cellette" del cbuffer.
+		È composta da un valore T, un puntatore al nodo successivo e due costruttori.
+	**/ 
 	struct node {
   		T value;
   		node *next;
@@ -35,7 +42,7 @@ public:
 
 	class iterator {
 		node *n;
-		static bool first_time;
+		bool first_time;
 
 	public:
 		typedef std::forward_iterator_tag iterator_category;
@@ -45,9 +52,13 @@ public:
 		typedef T&                        reference;
 
 	
-		iterator() : n(0), first_time(true) {}
+		iterator() : n(0), first_time(false) {}
 		
-		iterator(const iterator &other) : n(other.n), first_time(true) {}
+		iterator(const iterator &other) : n(other.n), first_time(true) {
+			if (other.n == 0) {
+				first_time = false;
+			}
+		}
 
 		iterator& operator=(const iterator &other) {
 			n = other.n;
@@ -57,7 +68,6 @@ public:
 
 		~iterator() {
 			n = 0;
-			first_time = false;
 			delete n;
 		}
 
@@ -74,6 +84,7 @@ public:
 		// Operatore di iterazione post-incremento
 		iterator operator++(int) {
 			iterator tmp(*this);
+			first_time = false;
 			n = n->next;
 			return tmp;
 		}
@@ -81,14 +92,13 @@ public:
 		// Operatore di iterazione pre-incremento
 		iterator& operator++() {
 			n = n->next;
+			first_time = false;
 			return *this;
 		}
 
 		// Uguaglianza
 		bool operator==(const iterator &other) const {
-			bool answer = (n == other.n && !first_time);
-			first_time = true;
-			return answer;
+			return (n == other.n && !first_time);
 		}
 
 		// Diversita'
@@ -101,9 +111,7 @@ public:
 
 		// Uguaglianza
 		bool operator==(const const_iterator &other) const {
-			bool answer = (n == other.n && !first_time);
-			first_time = true;
-			return answer;
+			return (n == other.n && !first_time);
 		}
 
 		// Diversita'
@@ -122,7 +130,11 @@ public:
 
 		// Costruttore privato di inizializzazione usato dalla classe container
 		// tipicamente nei metodi begin e end
-		iterator(node* nn) : n(nn), first_time(true) {}
+		iterator(node* nn) : n(nn), first_time(true) {
+			if (nn == 0) {
+				first_time = false;
+			}
+		}
 		
 		// !!! Eventuali altri metodi privati
 		
@@ -142,7 +154,7 @@ public:
 	
 	class const_iterator {
 		node *n;
-		static bool first_time;
+		bool first_time;
 
 	public:
 		typedef std::forward_iterator_tag iterator_category;
@@ -152,9 +164,13 @@ public:
 		typedef const T&                  reference;
 
 	
-		const_iterator() : n(0), first_time(true) {}
+		const_iterator() : n(0), first_time(false) {}
 		
-		const_iterator(const const_iterator &other) : n(other.n), first_time(true) {}
+		const_iterator(const const_iterator &other) : n(other.n), first_time(true) {
+			if (other.n == 0) {
+				first_time = false;
+			}
+		}
 
 		const_iterator& operator=(const const_iterator &other) {
 			n = other.n;
@@ -164,7 +180,6 @@ public:
 
 		~const_iterator() {
 			n = 0;
-			first_time = false;
 			delete n;
 		}
 
@@ -181,6 +196,7 @@ public:
 		// Operatore di iterazione post-incremento
 		const_iterator operator++(int) {
 			const_iterator tmp(*this);
+			first_time = false;
 			n = n->next;
 			return tmp;
 		}
@@ -188,14 +204,13 @@ public:
 		// Operatore di iterazione pre-incremento
 		const_iterator& operator++() {
 			n = n->next;
+			first_time = false;
 			return *this;
 		}
 
 		// Uguaglianza
 		bool operator==(const const_iterator &other) const {
-			bool answer = (n == other.n && !first_time);
-			first_time = true;
-			return answer;
+			return (n == other.n && !first_time);
 		}
 		
 		// Diversita'
@@ -209,9 +224,7 @@ public:
 
 		// Uguaglianza
 		bool operator==(const iterator &other) const {
-			bool answer = (n == other.n && !first_time);
-			first_time = true;
-			return answer;		
+			return (n == other.n && !first_time);	
 		}
 
 		// Diversita'
@@ -236,7 +249,11 @@ public:
 
 		// Costruttore privato di inizializzazione usato dalla classe container
 		// tipicamente nei metodi begin e end
-		const_iterator(node *nn) : n(nn), first_time(true) {}
+		const_iterator(node *nn) : n(nn), first_time(true) {
+			if (nn == 0) {
+				first_time = false;
+			}
+		}
 		
 		// !!! Eventuali altri metodi privati
 		
@@ -259,7 +276,7 @@ public:
 		node* _head;
 		node* _tail;
 
-				/** 
+		/** 
 		   @brief Ritorna un puntatore costante al nodo i-esimo
 
 		   Metodo che ritorna un puntatore costante al nodo i-esimo.
@@ -353,7 +370,6 @@ public:
 				tmp = tmp2;
 				_occupied--;
 			}
-			_size = 0;
 			_head = 0;
 			_tail = 0;
 			_occupied = 0;
