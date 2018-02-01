@@ -338,8 +338,7 @@ public:
 			Costruttore secondario. Permette di istanziare un cbuffer con una data dimensione.
 			@param size Dimensione del cbuffer da istanziare 
 		**/
-		explicit cbuffer(const unsigned int size) : _size(0), _occupied(0), _head(0), _tail(0) {
-			_size = size;
+		explicit cbuffer(const unsigned int size) : _size(size), _occupied(0), _head(0), _tail(0) {
 			#ifndef NDEBUG
 			std::cout << "cbuffer::cbuffer(unsigned int)" << std::endl;
 			#endif
@@ -547,10 +546,15 @@ public:
 
 			@pre E' necessario che index < _occupied
 			@param index Indice della cella dell'array da leggere
+			@throw std::out_of_range
 			@return Il valore della cella index-esima
 		**/
 		T &operator[](unsigned int index) {
 			assert(index < _occupied && "ERRORE! Accesso ad un indice inesistente"); // asserzione; se viene violata il programma termina
+			if (index >= _occupied) {
+				clear();
+				throw(std::range_error("index >= _occupied, must be: index < _occupied"));
+			}
 			return get_node(index)->value;
 		}
 
@@ -564,6 +568,9 @@ public:
 		**/
 		const T &operator[](unsigned int index) const {
 			assert(index < _occupied && "ERRORE! Accesso ad un indice inesistente"); // asserzione; se viene violata il programma termina
+			if (index >= _occupied) {
+				throw(std::range_error("index >= _occupied, must be: index < _occupied"));
+			}
 			return get_node(index)->value;
 		}
 

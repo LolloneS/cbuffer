@@ -3,8 +3,8 @@
 ### Prima di tutto: compilazione
 * `make doc` per creare la documentazione con Doxygen
 * `make` per compilare il progetto C++
-* `make debug` per compilare il progetto con stampe di debug e flag `-g`
-* `make run_valgrind` per compilare il progetto con stampe di debug e flag `-g` ed eseguire valgrind con la flag `--leak-check=yes`
+* `make debug` per compilare il progetto C++ con stampe di debug e flag `-g`
+* `make run_valgrind` per compilare il progetto C++ con stampe di debug e flag `-g` ed eseguire valgrind con la flag `--leak-check=yes`
 
 ### Introduzione
 La traccia del progetto richiede di scrivere un buffer circolare di dimensione data in fase di costruzione.
@@ -45,9 +45,11 @@ Di seguito, le mie scelte progettuali per quanto riguarda il cuore della classe,
         * l'accesso è consentito solo alle cellette del cbuffer che sono già state istanziate. 
         Ho inoltre implementato due `operator[]`, uno `const` per la lettura e uno standard in scrittura.
         È quindi consentita la *modifica* di cellette esistenti, ma non l'inserimento di nuove cellette, che richiede l'utilizzo di `insert`.
+        * in modalità debug, un'asserzione verifica che `size < _occupied`.
+        * in modalità standard, se `size >= _occupied` lancio un'eccezione `std::range_error`
 2. **iteratori**
     * sono stati implementati sia `const_iterator` che `iterator`. Questo per consentire sia un accesso read/write, che un accesso in sola lettura, quando non necessaria la scrittura.
-    * tramite una flag booleana `first_time` si riesce ad iterare normalmente con un ciclo for, come ci si aspetterebbe. Sia l'iteratore d'inizio che quello di fine corrispondono al nodo `_head`, ma la variabile consente di far fallire il primo controllo *begin ≠ end*
+    * tramite una flag booleana `first_time` si riesce ad iterare normalmente con un ciclo for, come ci si aspetterebbe. Sia l'iteratore d'inizio che quello di fine corrispondono al nodo `_head`, ma la flag consente di far fallire il primo controllo *begin ≠ end*
 3. **costruttori**
     * sono stati implementati vari costruttori:
         1. costruttore di default, `cbuffer()`
@@ -78,6 +80,9 @@ Con (non molta) fantasia, ho nominato i test:
 * `test evaluate if `: testa il metodo `evaluate_if` su dei cbuffer di varie strutture, con vari funtori.
 * `test operator quadre`: testa a fondo `operator[]`
 * `test clear poi riempi`: chiama `clear` su un cbuffer e lo riempie nuovamente
+
+#### File `misc.h`
+Nel file `misc.h` sono presenti due strutture (point, voce), i relativi `operator<<` e dei funtori (sempre sotto forma di strutture).
 
 
 #### Informazioni varie

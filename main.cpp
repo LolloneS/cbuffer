@@ -33,6 +33,7 @@ void test_costruttore_iteratori() {
     cbuffer<char>::iterator i, ie;
 	for(i = c.begin(), ie = c.end(); i != ie; ++i) 
 		std::cout << *i << std::endl;
+    std::cout << c[1000];
     
     c.clear();
     assert(c.occupied() == 0 && "Problema con occupied, costruttore da iteratori post remove_head");
@@ -41,6 +42,7 @@ void test_costruttore_iteratori() {
 	cbuffer<char>::const_iterator ci, cie;
 	for(ci = c.begin(), cie = c.end(); ci != cie; ++ci) 
 		std::cout << *ci << std::endl;
+
 
     std::cout << "!!!TEST COSTRUTTORE DA UN ITERATORE DI TIPO PRIMITIVO CHAR PASSATO!!!" << std::endl;
     
