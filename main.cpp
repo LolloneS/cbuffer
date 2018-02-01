@@ -29,10 +29,16 @@ void test_costruttore_iteratori() {
     assert(c.occupied() == 3 && "Problema con occupied, costruttore da iteratori post remove_head");  
     c.insert('z');
 	std::cout<<"Test stampa con iterator"<<std::endl;
-
     cbuffer<char>::iterator i, ie;
 	for(i = c.begin(), ie = c.end(); i != ie; ++i) 
 		std::cout << *i << std::endl;
+    std::cout<<"Test scrittura con iterator"<<std::endl;
+	for(i = c.begin(), ie = c.end(); i != ie; ++i) {
+		*i = 70;
+        std::cout << *i << std::endl;    
+    }
+    
+    
     try {
         std::cout << c[1000];
     } catch(std::range_error e) {
