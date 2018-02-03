@@ -36,8 +36,8 @@ void MainWindow::updateUI() {
     headers.append("% Uomini");
     headers.append("Donne");
     headers.append("% Donne");
-    QStringList *qHeaders = new QStringList(headers);
-    ui->tableRegion->setHorizontalHeaderLabels(*qHeaders);
+    QStringList qHeaders(headers);
+    ui->tableRegion->setHorizontalHeaderLabels(qHeaders);
     ui->tableRegion->verticalHeader()->hide();
 
     QMap<std::string, QVector<fascia_eta> >::iterator i, ie;
