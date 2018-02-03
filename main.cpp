@@ -38,12 +38,13 @@ void test_costruttore_iteratori() {
         std::cout << *i << std::endl;    
     }
     
-    
+    /*
     try {
         std::cout << c[1000];
     } catch(std::range_error e) {
         std::cout << "Tentato accesso a posizione non valida con operator[]" << std::endl;
     }
+    */
 
 
     c.clear();
