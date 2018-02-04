@@ -10,6 +10,12 @@
     <height>539</height>
    </rect>
   </property>
+  <property name="font">
+   <font>
+    <weight>75</weight>
+    <bold>true</bold>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>Progetto Regioni</string>
   </property>
@@ -25,7 +31,7 @@
     </property>
     <property name="font">
      <font>
-      <family>Ubuntu</family>
+      <family>DejaVu Sans Mono</family>
       <weight>75</weight>
       <bold>true</bold>
      </font>
