@@ -338,11 +338,7 @@ public:
 			Costruttore secondario. Permette di istanziare un cbuffer con una data dimensione.
 			@param size Dimensione del cbuffer da istanziare 
 		**/
-		explicit cbuffer(const unsigned int size) : _size(size), _occupied(0), _head(0), _tail(0) {
-			#ifndef NDEBUG
-			std::cout << "cbuffer::cbuffer(unsigned int)" << std::endl;
-			#endif
-		}
+		explicit cbuffer(const unsigned int size) : _size(size), _occupied(0), _head(0), _tail(0) { }
 
 		/**
 			@brief Distruttore (METODO FONDAMENTALE)
@@ -351,9 +347,7 @@ public:
 		**/
 		~cbuffer() {
 			clear();
-			#ifndef NDEBUG
-				std::cout << "cbuffer::~cbuffer()" << std::endl;
-			#endif
+			_size = 0;
 		}
 
 		/**
@@ -372,9 +366,6 @@ public:
 			_head = 0;
 			_tail = 0;
 			_occupied = 0;
-			#ifndef NDEBUG
-				std::cout << "cbuffer::clear()" << std::endl;
-			#endif
 		}
 
 		/**
@@ -399,10 +390,6 @@ public:
 				clear();
 				throw;
 			}		
-
-			#ifndef NDEBUG
-			std::cout << "cbuffer::cbuffer(const cbuffer&)" << std::endl;
-			#endif
 		}
 
 		/**
@@ -467,10 +454,6 @@ public:
 				clear();
 				throw;
 			}
-			#ifndef NDEBUG
-				std::cout << "cbuffer::insert()" << std::endl;
-			#endif
-
 		}
 
 		/**
@@ -546,7 +529,7 @@ public:
 
 			@pre E' necessario che index < _occupied
 			@param index Indice della cella dell'array da leggere
-			@throw std::out_of_range
+			@throw std::range_error
 			@return Il valore della cella index-esima
 		**/
 		T &operator[](unsigned int index) {
@@ -565,6 +548,8 @@ public:
 
 			@pre E' necessario che index < _occupied
 			@param index Indice della cella dell'array da scrivere
+			@throw std::range_error
+			@return Il valore della cella index-esima
 		**/
 		const T &operator[](unsigned int index) const {
 			assert(index < _occupied && "ERRORE! Accesso ad un indice inesistente"); // asserzione; se viene violata il programma termina

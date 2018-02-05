@@ -3,8 +3,9 @@
 ### Prima di tutto: compilazione
 * `make doc` per creare la documentazione con Doxygen
 * `make` per compilare il progetto C++
-* `make debug` per compilare il progetto C++ con stampe di debug e flag `-g`
 * `make run_valgrind` per compilare il progetto C++ con stampe di debug e flag `-g` ed eseguire valgrind con la flag `--leak-check=yes`
+* vi sono altre opzioni utilizzate in fase di scrittura del codice e di testing
+
 
 ### Introduzione
 La traccia del progetto richiede di scrivere un buffer circolare di dimensione data in fase di costruzione.
@@ -64,9 +65,9 @@ Di seguito, le mie scelte progettuali per quanto riguarda il cuore della classe,
 5. **evaluate_if**
     * il metodo è stato implementato come da specifica. Viene fatto uso dell'operatore condizionale `?` per comodità.
 6. **clear**
-    * il metodo clear è reso pubblico al fine di rendere facile per l'utente svuotare il cbuffer
+    * il metodo clear è reso pubblico al fine di rendere facile per l'utente svuotare il cbuffer. La clear distrugge tutti i nodi del cbuffer, imposta il valore degli occupati a 0 e lascia la `size` invariata per un eventuale successivo riempiemento. Il distruttore chiama la clear e, per "correttezza formale", azzera anche la size
 7. **get_node**
-    * è un metodo privato a cui si appoggia `operator[]`
+    * è un metodo privato a cui si appoggia `operator[]`. Ritorna il nodo *index*-esimo.
 8. **size**, **occupied**
     * danno, rispettivamente, dimensione e numero di cellette occupate
 
