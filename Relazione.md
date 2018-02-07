@@ -1,5 +1,5 @@
-# CBuffer
-## Lorenzo Soligo - 806954 - Febbraio 2018
+# CBuffer - Febbraio 2018
+## Lorenzo Soligo - 806954 - l.soligo@campus.unimib.it
 ### Prima di tutto: compilazione
 * `make doc` per creare la documentazione con Doxygen
 * `make` per compilare il progetto C++
