@@ -1900,7 +1900,16 @@ mainwindow.o: mainwindow.cpp mainwindow.h \
 		../../Qt/5.6/gcc_64/include/QtCore/QString \
 		../../Qt/5.6/gcc_64/include/QtCore/QMap \
 		../../Qt/5.6/gcc_64/include/QtCore/QVector \
-		ui_mainwindow.h
+		ui_mainwindow.h \
+		../../Qt/5.6/gcc_64/include/QtWidgets/QAction \
+		../../Qt/5.6/gcc_64/include/QtWidgets/QApplication \
+		../../Qt/5.6/gcc_64/include/QtWidgets/QButtonGroup \
+		../../Qt/5.6/gcc_64/include/QtWidgets/QComboBox \
+		../../Qt/5.6/gcc_64/include/QtWidgets/QHeaderView \
+		../../Qt/5.6/gcc_64/include/QtWidgets/QLabel \
+		../../Qt/5.6/gcc_64/include/QtWidgets/QStatusBar \
+		../../Qt/5.6/gcc_64/include/QtWidgets/QTableWidget \
+		../../Qt/5.6/gcc_64/include/QtWidgets/QToolBar
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o mainwindow.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 
