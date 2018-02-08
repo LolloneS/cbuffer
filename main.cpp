@@ -28,15 +28,20 @@ void test_costruttore_iteratori() {
     c[0] = 'k';
     assert(c.occupied() == 3 && "Problema con occupied, costruttore da iteratori post remove_head");  
     c.insert('z');
-	std::cout<<"Test stampa con iterator"<<std::endl;
+	std::cout << "Test stampa con iterator" << std::endl;
     cbuffer<char>::iterator i, ie;
 	for(i = c.begin(), ie = c.end(); i != ie; ++i) 
 		std::cout << *i << std::endl;
-    std::cout<<"Test scrittura con iterator"<<std::endl;
+    std::cout << std::endl << "Test scrittura con iterator" << std::endl;
 	for(i = c.begin(), ie = c.end(); i != ie; ++i) {
 		*i = 70;
         std::cout << *i << std::endl;    
     }
+    
+    std::cout << std::endl << "Test stampa cbuffer vuoto con const_iterator" << std::endl;
+	cbuffer<char>::const_iterator ci, cie;
+	for(ci = c.begin(), cie = c.end(); ci != cie; ++ci) 
+		std::cout << *ci << std::endl;
     
     /*
     try {
@@ -46,12 +51,10 @@ void test_costruttore_iteratori() {
     }
     */
 
-
     c.clear();
     assert(c.occupied() == 0 && "Problema con occupied, costruttore da iteratori post remove_head");
-	std::cout<<std::endl<<"Test stampa cbuffer vuoto con const_iterator"<<std::endl;
+	std::cout << std::endl << "Test stampa cbuffer vuoto con const_iterator" << std::endl;
 
-	cbuffer<char>::const_iterator ci, cie;
 	for(ci = c.begin(), cie = c.end(); ci != cie; ++ci) 
 		std::cout << *ci << std::endl;
 
