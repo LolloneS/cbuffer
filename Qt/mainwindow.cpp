@@ -3,9 +3,6 @@
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
-    parseRegioni();
-    updateUI();
-
 }
 
 MainWindow::~MainWindow()
@@ -24,7 +21,6 @@ void MainWindow::showRegion(QVector<fascia_eta>& qv) {
         ui->tableRegion->setItem(i, 2, new QTableWidgetItem(QString::number(qv[i].pcUomini, 'f', 2)));
         ui->tableRegion->setItem(i, 3, new QTableWidgetItem(QString::number(qv[i].donne)));
         ui->tableRegion->setItem(i, 4, new QTableWidgetItem(QString::number(qv[i].pcDonne, 'f', 2)));
-
     }
 }
 
@@ -44,10 +40,12 @@ void MainWindow::updateUI() {
     for(i = regioniFasce.begin(), ie = regioniFasce.end(); i != ie; ++i) {
         ui->cbRegion->addItem(QString::fromStdString(i.key()));
     }
+
 }
 
 void MainWindow::parseRegioni() {
-    QString filename = "./data.txt";
+    QString filename = QFileDialog::getOpenFileName(this, "Open Data", "./", "Text files (*.txt)");
+    // QString filename = "./data.txt";
     std::ifstream is;
     is.open(filename.toStdString().c_str());
     std::string regione, fascia;
@@ -72,12 +70,18 @@ void MainWindow::parseRegioni() {
     }
 }
 
-std::ostream &operator<<(std::ostream &os, const fascia_eta &f) {
-    os << f.fascia << " " << f.uomini << " " << f.donne;
-    return os;
+void MainWindow::on_cbRegion_currentTextChanged(const QString &arg1) {
+    if (regioniFasce.count(arg1.toStdString()) == 1)
+        showRegion(regioniFasce[arg1.toStdString()]);
+    else
+        ui->tableRegion->setRowCount(0);
+    ui->labRegion->setText(arg1);
 }
 
-void MainWindow::on_cbRegion_currentTextChanged(const QString &arg1) {
-    showRegion(regioniFasce[arg1.toStdString()]);
-    ui->labRegion->setText(arg1);
+void MainWindow::on_pbLoadData_clicked()
+{
+    parseRegioni();
+    updateUI();
+    ui->cbRegion->insertItem(0, QString("Seleziona una regione"));
+    ui->cbRegion->setCurrentIndex(0);
 }

@@ -1907,6 +1907,7 @@ mainwindow.o: mainwindow.cpp mainwindow.h \
 		../../Qt/5.6/gcc_64/include/QtWidgets/QComboBox \
 		../../Qt/5.6/gcc_64/include/QtWidgets/QHeaderView \
 		../../Qt/5.6/gcc_64/include/QtWidgets/QLabel \
+		../../Qt/5.6/gcc_64/include/QtWidgets/QPushButton \
 		../../Qt/5.6/gcc_64/include/QtWidgets/QStatusBar \
 		../../Qt/5.6/gcc_64/include/QtWidgets/QTableWidget \
 		../../Qt/5.6/gcc_64/include/QtWidgets/QToolBar

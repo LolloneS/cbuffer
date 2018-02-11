@@ -41,14 +41,12 @@ public:
 private slots:
     void on_cbRegion_currentTextChanged(const QString &arg1);
 
+    void on_pbLoadData_clicked();
+
 private:
     Ui::MainWindow *ui;
     void updateUI();
 };
-
-
-
-std::ostream &operator<<(std::ostream &os, const fascia_eta &f);
 
 
 #endif // MAINWINDOW_H

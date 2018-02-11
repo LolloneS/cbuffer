@@ -31,13 +31,13 @@
     </property>
     <property name="font">
      <font>
-      <family>DejaVu Sans Mono</family>
-      <weight>75</weight>
-      <bold>true</bold>
+      <family>Cantarell</family>
+      <weight>50</weight>
+      <bold>false</bold>
      </font>
     </property>
     <property name="text">
-     <string>Seleziona una regione</string>
+     <string>Apri il file data.txt con il bottone apposito</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -75,6 +75,19 @@
     </property>
     <property name="editable">
      <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pbLoadData">
+    <property name="geometry">
+     <rect>
+      <x>610</x>
+      <y>370</y>
+      <width>111</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Load Data.txt</string>
     </property>
    </widget>
   </widget>
