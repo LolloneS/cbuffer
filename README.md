@@ -1,6 +1,5 @@
 # CBuffer - Febbraio 2018
 ## Lorenzo Soligo - 806954 - l.soligo@campus.unimib.it
-
 ### Prima di tutto: compilazione
 * `make doc` per creare la documentazione con Doxygen
 * `make` per compilare il progetto C++
@@ -51,6 +50,7 @@ Di seguito, le mie scelte progettuali per quanto riguarda il cuore della classe,
         * in modalità standard, se `size >= _occupied` lancio un'eccezione `std::range_error`
 2. **iteratori**
     * sono stati implementati sia `const_iterator` che `iterator`. Questo per consentire sia un accesso read/write, che un accesso in sola lettura, quando non necessaria la scrittura.
+    * è stato scelto un `forward iterator`. Penso che il modo migliore di ciclare sul cbuffer sia progressivamente "in avanti", vista la natura circolare del buffer stesso. L'inserimento e la rimozione avvengono in modo specifico (inserimento in coda, rimozione della testa), quindi mi sembra logico mantenere questo verso di percorrenza del buffer
     * tramite una flag booleana `first_time` si riesce ad iterare normalmente con un ciclo for, come ci si aspetterebbe. Sia l'iteratore d'inizio che quello di fine corrispondono al nodo `_head`, ma la flag consente di far fallire il primo controllo *begin ≠ end*
 3. **costruttori**
     * sono stati implementati vari costruttori:
@@ -72,7 +72,7 @@ Di seguito, le mie scelte progettuali per quanto riguarda il cuore della classe,
 8. **size**, **occupied**
     * danno, rispettivamente, dimensione e numero di cellette occupate
 
-#### Main.cpp: i test
+#### Test
 Con (non molta) fantasia, ho nominato i test:
 * `test buono`: istanzia un cbuffer di interi vuoto e verifica che le operazioni `insert` e `remove_head` non facciano danni.
 * `test non molto buono`: istanzia un cbuffer di `std::string` e lo maltratta con `insert`, `operator[]` e `remove_head`. Numerose assert verificano che tutto avvenga come dovrebbe.
